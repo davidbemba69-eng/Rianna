@@ -10,7 +10,519 @@
 
 <body>
 
-  <header>
+  <head<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>K-Story 📖</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8f4ff;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7b2cbf, #c77dff);
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 38px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+        }
+
+        nav {
+            background: white;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav button {
+            border: none;
+            background: #eee4ff;
+            color: #6a1b9a;
+            padding: 11px 18px;
+            border-radius: 20px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        nav button:hover {
+            background: #d8b4fe;
+        }
+
+        .page {
+            display: none;
+            max-width: 950px;
+            margin: auto;
+            padding: 30px 18px 60px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 45px 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .hero h2 {
+            color: #7b2cbf;
+            font-size: 32px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .main-button {
+            border: none;
+            background: #7b2cbf;
+            color: white;
+            padding: 14px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .main-button:hover {
+            background: #5a189a;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #7b2cbf;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #9d4edd;
+        }
+
+        #storyList,
+        #storiesList {
+            display: grid;
+            gap: 20px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .story-card h3 {
+            color: #7b2cbf;
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .story-card p {
+            line-height: 1.6;
+        }
+
+        .author {
+            color: #777;
+            font-style: italic;
+        }
+
+        .story-card button {
+            border: none;
+            background: #7b2cbf;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .story-card button:hover {
+            background: #5a189a;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px 20px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+
+        .empty h3 {
+            color: #7b2cbf;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            margin: 18px 0 8px;
+            color: #5a189a;
+        }
+
+        .form-container input,
+        .form-container textarea {
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            outline: none;
+        }
+
+        .form-container input:focus,
+        .form-container textarea:focus {
+            border-color: #9d4edd;
+        }
+
+        .form-container textarea {
+            min-height: 450px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        .publish-button {
+            width: 100%;
+            border: none;
+            background: #7b2cbf;
+            color: white;
+            padding: 16px;
+            border-radius: 25px;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+
+        .publish-button:hover {
+            background: #5a189a;
+        }
+
+        .info {
+            background: #f3e8ff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #5a189a;
+        }
+
+        footer {
+            background: #24152f;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 30px;
+            }
+
+            nav button {
+                padding: 10px 13px;
+                font-size: 14px;
+            }
+
+            .page {
+                padding: 20px 12px 45px;
+            }
+
+            .hero {
+                padding: 30px 15px;
+            }
+
+            .hero h2 {
+                font-size: 27px;
+            }
+
+            .form-container {
+                padding: 20px 15px;
+            }
+
+            .form-container textarea {
+                min-height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- EN-TÊTE -->
+    <!-- ========================= -->
+
+    <header>
+        <h1>📖 K-Story</h1>
+        <p>Écris, publie et découvre de nouvelles histoires ✨</p>
+    </header>
+
+
+    <!-- ========================= -->
+    <!-- MENU -->
+    <!-- ========================= -->
+
+    <nav>
+
+        <button onclick="showPage('accueil')">
+            🏠 Accueil
+        </button>
+
+        <button onclick="showPage('histoires')">
+            📚 Histoires
+        </button>
+
+        <button onclick="showPage('publier')">
+            ✍️ Publier
+        </button>
+
+    </nav>
+
+
+    <!-- ========================= -->
+    <!-- ACCUEIL -->
+    <!-- ========================= -->
+
+    <main>
+
+        <section id="accueil" class="page active">
+
+            <div class="hero">
+
+                <h2>Bienvenue sur K-Story 💜</h2>
+
+                <p>
+                    Ton petit espace pour écrire,
+                    publier et découvrir des histoires.
+                </p>
+
+                <p>
+                    Laisse parler ton imagination et
+                    partage tes histoires avec les lecteurs.
+                </p>
+
+                <button
+                    class="main-button"
+                    onclick="showPage('publier')">
+
+                    ✍️ Écrire une histoire
+
+                </button>
+
+                <button
+                    class="main-button"
+                    onclick="showPage('histoires')">
+
+                    📚 Découvrir les histoires
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- HISTOIRES -->
+        <!-- ========================= -->
+
+        <section id="histoires" class="page">
+
+            <h2 class="section-title">
+                📚 Les histoires
+            </h2>
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="🔎 Rechercher une histoire..."
+                >
+
+            </div>
+
+            <div id="storyList">
+
+                <div class="empty">
+
+                    <h3>📖 Aucune histoire publiée</h3>
+
+                    <p>
+                        Sois la première à publier
+                        une histoire sur K-Story !
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- PUBLIER -->
+        <!-- ========================= -->
+
+        <section id="publier" class="page">
+
+            <h2 class="section-title">
+                ✍️ Publier une histoire
+            </h2>
+
+            <div class="form-container">
+
+                <div class="info">
+
+                    💡 Écris ton histoire,
+                    donne-lui un titre et publie-la
+                    sur K-Story.
+
+                </div>
+
+
+                <form id="storyForm">
+
+                    <label for="title">
+                        📖 Titre de l'histoire
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        placeholder="Exemple : Mon rêve en Corée"
+                        required
+                    >
+
+
+                    <label for="author">
+                        ✍️ Nom de l'auteur
+                    </label>
+
+                    <input
+                        type="text"
+                        id="author"
+                        placeholder="Ton nom ou ton pseudo"
+                        required
+                    >
+
+
+                    <label for="description">
+                        📝 Description
+                    </label>
+
+                    <input
+                        type="text"
+                        id="description"
+                        placeholder="Une courte présentation de ton histoire"
+                        required
+                    >
+
+
+                    <label for="content">
+                        📚 Ton histoire
+                    </label>
+
+                    <textarea
+                        id="content"
+                        placeholder="Commence à écrire ton histoire ici...
+
+Chapitre 1
+
+Il était une fois..."
+                        required
+                    ></textarea>
+
+
+                    <button
+                        type="submit"
+                        class="publish-button">
+
+                        🚀 Publier mon histoire
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ========================= -->
+    <!-- PIED DE PAGE -->
+    <!-- ========================= -->
+
+    <footer>
+
+        <p>
+            📖 K-Story — Écris ton histoire, crée ton univers ✨
+        </p>
+
+    </footer>
+
+
+    <!-- ========================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================= -->
+
+    <script src="script.js"></script>
+
+</body>
+  </html>er>
     <h1>🌸 K-Story</h1>
     <p>Écris, publie et découvre des histoires ✨</p>
   </header>
