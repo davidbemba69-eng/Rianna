@@ -1,5 +1,133 @@
 <!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-Story</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>🌸 K-Story</h1>
+    <p>Écris, publie et découvre des histoires ✨</p>
+  </header>
+
+  <nav>
+    <button onclick="showPage('accueil')">🏠 Accueil</button>
+    <button onclick="showPage('histoires')">📚 Histoires</button>
+    <button onclick="showPage('publier')">✍️ Publier une histoire</button>
+  </nav>
+
+  <main>
+
+    <!-- ACCUEIL -->
+    <section id="accueil" class="page active">
+      <h2>Bienvenue sur K-Story 💕</h2>
+
+      <p>
+        Un espace pour partager tes histoires,
+        découvrir celles des autres et laisser parler
+        ton imagination.
+      </p>
+
+      <button class="main-button" onclick="showPage('publier')">
+        ✍️ Publier une histoire
+      </button>
+    </section>
+
+
+    <!-- HISTOIRES -->
+    <section id="histoires" class="page">
+      <h2>📚 Les histoires</h2>
+
+      <div id="storyList">
+        <p>Aucune histoire publiée pour le moment.</p>
+      </div>
+    </section>
+
+
+    <!-- PUBLIER UNE HISTOIRE -->
+    <section id="publier" class="page">
+
+      <h2>✍️ Publier une histoire</h2>
+
+      <form id="storyForm">
+
+        <label for="title">
+          Titre de l'histoire
+        </label>
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Ex : Mon rêve en Corée"
+          required
+        >
+
+
+        <label for="author">
+          Nom d'auteur
+        </label>
+
+        <input
+          type="text"
+          id="author"
+          placeholder="Ton pseudo"
+          required
+        >
+
+
+        <label for="description">
+          Description
+        </label>
+
+        <textarea
+          id="description"
+          placeholder="Présente ton histoire en quelques lignes..."
+          required
+        ></textarea>
+
+
+        <label for="content">
+          Ton histoire
+        </label>
+
+        <textarea
+          id="content"
+          rows="12"
+          placeholder="Écris ton histoire ici..."
+          required
+        ></textarea>
+
+
+        <button
+          type="submit"
+          class="main-button"
+        >
+          📖 Publier
+        </button>
+
+      </form>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    <p>
+      🌸 K-Story — Écris ton histoire, raconte ton rêve.
+    </p>
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+  </html>html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
