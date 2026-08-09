@@ -1,825 +1,14 @@
-<!DOCTYPE html>
-<<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-Story</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-  <head<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>K-Story 📖</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f8f4ff;
-            color: #333;
-        }
-
-        header {
-            background: linear-gradient(135deg, #7b2cbf, #c77dff);
-            color: white;
-            text-align: center;
-            padding: 30px 15px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 38px;
-        }
-
-        header p {
-            margin: 8px 0 0;
-            font-size: 16px;
-        }
-
-        nav {
-            background: white;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        nav button {
-            border: none;
-            background: #eee4ff;
-            color: #6a1b9a;
-            padding: 11px 18px;
-            border-radius: 20px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        nav button:hover {
-            background: #d8b4fe;
-        }
-
-        .page {
-            display: none;
-            max-width: 950px;
-            margin: auto;
-            padding: 30px 18px 60px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .hero {
-            text-align: center;
-            background: white;
-            border-radius: 20px;
-            padding: 45px 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .hero h2 {
-            color: #7b2cbf;
-            font-size: 32px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            line-height: 1.6;
-        }
-
-        .main-button {
-            border: none;
-            background: #7b2cbf;
-            color: white;
-            padding: 14px 25px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .main-button:hover {
-            background: #5a189a;
-        }
-
-        .section-title {
-            text-align: center;
-            color: #7b2cbf;
-            font-size: 30px;
-            margin-bottom: 25px;
-        }
-
-        .search-box {
-            margin-bottom: 25px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .search-box input:focus {
-            border-color: #9d4edd;
-        }
-
-        #storyList,
-        #storiesList {
-            display: grid;
-            gap: 20px;
-        }
-
-        .story-card {
-            background: white;
-            border-radius: 18px;
-            padding: 22px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .story-card h3 {
-            color: #7b2cbf;
-            margin-top: 0;
-            font-size: 22px;
-        }
-
-        .story-card p {
-            line-height: 1.6;
-        }
-
-        .author {
-            color: #777;
-            font-style: italic;
-        }
-
-        .story-card button {
-            border: none;
-            background: #7b2cbf;
-            color: white;
-            padding: 11px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .story-card button:hover {
-            background: #5a189a;
-        }
-
-        .empty {
-            background: white;
-            padding: 35px 20px;
-            border-radius: 18px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-        }
-
-        .empty h3 {
-            color: #7b2cbf;
-        }
-
-        .form-container {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .form-container label {
-            display: block;
-            font-weight: bold;
-            margin: 18px 0 8px;
-            color: #5a189a;
-        }
-
-        .form-container input,
-        .form-container textarea {
-            width: 100%;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            outline: none;
-        }
-
-        .form-container input:focus,
-        .form-container textarea:focus {
-            border-color: #9d4edd;
-        }
-
-        .form-container textarea {
-            min-height: 450px;
-            resize: vertical;
-            line-height: 1.7;
-        }
-
-        .publish-button {
-            width: 100%;
-            border: none;
-            background: #7b2cbf;
-            color: white;
-            padding: 16px;
-            border-radius: 25px;
-            font-size: 17px;
-            cursor: pointer;
-            margin-top: 25px;
-        }
-
-        .publish-button:hover {
-            background: #5a189a;
-        }
-
-        .info {
-            background: #f3e8ff;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            color: #5a189a;
-        }
-
-        footer {
-            background: #24152f;
-            color: white;
-            text-align: center;
-            padding: 25px;
-        }
-
-        @media (max-width: 600px) {
-
-            header h1 {
-                font-size: 30px;
-            }
-
-            nav button {
-                padding: 10px 13px;
-                font-size: 14px;
-            }
-
-            .page {
-                padding: 20px 12px 45px;
-            }
-
-            .hero {
-                padding: 30px 15px;
-            }
-
-            .hero h2 {
-                font-size: 27px;
-            }
-
-            .form-container {
-                padding: 20px 15px;
-            }
-
-            .form-container textarea {
-                min-height: 500px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- ========================= -->
-    <!-- EN-TÊTE -->
-    <!-- ========================= -->
-
-    <header>
-        <h1>📖 K-Story</h1>
-        <p>Écris, publie et découvre de nouvelles histoires ✨</p>
-    </header>
-
-
-    <!-- ========================= -->
-    <!-- MENU -->
-    <!-- ========================= -->
-
-    <nav>
-
-        <button onclick="showPage('accueil')">
-            🏠 Accueil
-        </button>
-
-        <button onclick="showPage('histoires')">
-            📚 Histoires
-        </button>
-
-        <button onclick="showPage('publier')">
-            ✍️ Publier
-        </button>
-
-    </nav>
-
-
-    <!-- ========================= -->
-    <!-- ACCUEIL -->
-    <!-- ========================= -->
-
-    <main>
-
-        <section id="accueil" class="page active">
-
-            <div class="hero">
-
-                <h2>Bienvenue sur K-Story 💜</h2>
-
-                <p>
-                    Ton petit espace pour écrire,
-                    publier et découvrir des histoires.
-                </p>
-
-                <p>
-                    Laisse parler ton imagination et
-                    partage tes histoires avec les lecteurs.
-                </p>
-
-                <button
-                    class="main-button"
-                    onclick="showPage('publier')">
-
-                    ✍️ Écrire une histoire
-
-                </button>
-
-                <button
-                    class="main-button"
-                    onclick="showPage('histoires')">
-
-                    📚 Découvrir les histoires
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- ========================= -->
-        <!-- HISTOIRES -->
-        <!-- ========================= -->
-
-        <section id="histoires" class="page">
-
-            <h2 class="section-title">
-                📚 Les histoires
-            </h2>
-
-            <div class="search-box">
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="🔎 Rechercher une histoire..."
-                >
-
-            </div>
-
-            <div id="storyList">
-
-                <div class="empty">
-
-                    <h3>📖 Aucune histoire publiée</h3>
-
-                    <p>
-                        Sois la première à publier
-                        une histoire sur K-Story !
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ========================= -->
-        <!-- PUBLIER -->
-        <!-- ========================= -->
-
-        <section id="publier" class="page">
-
-            <h2 class="section-title">
-                ✍️ Publier une histoire
-            </h2>
-
-            <div class="form-container">
-
-                <div class="info">
-
-                    💡 Écris ton histoire,
-                    donne-lui un titre et publie-la
-                    sur K-Story.
-
-                </div>
-
-
-                <form id="storyForm">
-
-                    <label for="title">
-                        📖 Titre de l'histoire
-                    </label>
-
-                    <input
-                        type="text"
-                        id="title"
-                        placeholder="Exemple : Mon rêve en Corée"
-                        required
-                    >
-
-
-                    <label for="author">
-                        ✍️ Nom de l'auteur
-                    </label>
-
-                    <input
-                        type="text"
-                        id="author"
-                        placeholder="Ton nom ou ton pseudo"
-                        required
-                    >
-
-
-                    <label for="description">
-                        📝 Description
-                    </label>
-
-                    <input
-                        type="text"
-                        id="description"
-                        placeholder="Une courte présentation de ton histoire"
-                        required
-                    >
-
-
-                    <label for="content">
-                        📚 Ton histoire
-                    </label>
-
-                    <textarea
-                        id="content"
-                        placeholder="Commence à écrire ton histoire ici...
-
-Chapitre 1
-
-Il était une fois..."
-                        required
-                    ></textarea>
-
-
-                    <button
-                        type="submit"
-                        class="publish-button">
-
-                        🚀 Publier mon histoire
-
-                    </button>
-
-                </form>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ========================= -->
-    <!-- PIED DE PAGE -->
-    <!-- ========================= -->
-
-    <footer>
-
-        <p>
-            📖 K-Story — Écris ton histoire, crée ton univers ✨
-        </p>
-
-    </footer>
-
-
-    <!-- ========================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ========================= -->
-
-    <script src="script.js"></script>
-
-</body>
-  </html>er>
-    <h1>🌸 K-Story</h1>
-    <p>Écris, publie et découvre des histoires ✨</p>
-  </header>
-
-  <nav>
-    <button onclick="showPage('accueil')">🏠 Accueil</button>
-    <button onclick="showPage('histoires')">📚 Histoires</button>
-    <button onclick="showPage('publier')">✍️ Publier une histoire</button>
-  </nav>
-
-  <main>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-Story</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<header class="header">
-  <h1>🌸 K-Story</h1>
-  <p>Ton univers pour écrire et découvrir des histoires</p>
-</header>
-
-<nav class="navbar">
-  <button onclick="showPage('accueil')">🏠 Accueil</button>
-  <button onclick="showPage('histoires')">📚 Histoires</button>
-  <button onclick="showPage('publier')">✍️ Publier</button>
-</nav>
-
-<main>
-
-  <!-- ACCUEIL -->
-  <section id="accueil" class="page active">
-
-    <div class="welcome">
-      <h2>Bienvenue sur K-Story 💕</h2>
-
-      <p>
-        Écris tes propres histoires, publie-les et
-        découvre celles des autres.
-      </p>
-
-      <button
-        class="big-button"
-        onclick="showPage('histoires')">
-        📚 Découvrir les histoires
-      </button>
-
-      <button
-        class="big-button"
-        onclick="showPage('publier')">
-        ✍️ Écrire une histoire
-      </button>
-    </div>
-
-  </section>
-
-
-  <!-- HISTOIRES -->
-  <section id="histoires" class="page">
-
-    <h2>📚 Toutes les histoires</h2>
-
-    <div id="storyList"></div>
-
-  </section>
-
-
-  <!-- LECTURE -->
-  <section id="lecture" class="page">
-
-    <button
-      class="back-button"
-      onclick="showPage('histoires')">
-      ← Retour aux histoires
-    </button>
-
-    <article class="reading-page">
-
-      <h2 id="readingTitle"></h2>
-
-      <p id="readingAuthor" class="author"></p>
-
-      <p id="readingDescription" class="description"></p>
-
-      <hr>
-
-      <div id="readingContent" class="reading-content"></div>
-
-    </article>
-
-  </section>
-
-
-  <!-- PUBLICATION -->
-  <section id="publier" class="page">
-
-    <div class="writing-page">
-
-      <h2>✍️ Écrire une histoire</h2>
-
-      <form id="storyForm">
-
-        <label for="title">
-          Titre de ton histoire
-        </label>
-
-        <input
-          type="text"
-          id="title"
-          placeholder="Ex : Mon rêve en Corée"
-          required
-        >
-
-
-        <label for="author">
-          Ton nom d'auteur
-        </label>
-
-        <input
-          type="text"
-          id="author"
-          placeholder="Ex : Henriana"
-          required
-        >
-
-
-        <label for="description">
-          Description
-        </label>
-
-        <textarea
-          id="description"
-          class="description-box"
-          placeholder="Présente ton histoire..."
-          required
-        ></textarea>
-
-
-        <label for="content">
-          Écris ton histoire
-        </label>
-
-        <textarea
-          id="content"
-          class="story-editor"
-          placeholder="Commence ton histoire ici..."
-          required
-        ></textarea>
-
-
-        <button
-          type="submit"
-          class="publish-button">
-          📖 Publier mon histoire
-        </button>
-
-      </form>
-
-    </div>
-
-  </section>
-
-</main>
-
-
-<footer>
-  <p>🌸 K-Story — Écris ton histoire, raconte ton rêve.</p>
-</footer>
-
-
-<script src="script.js"></script>
-
-</body>
-  </html>
-    <!-- ACCUEIL -->
-    <section id="accueil" class="page active">
-      <h2>Bienvenue sur K-Story 💕</h2>
-
-      <p>
-        Un espace pour partager tes histoires,
-        découvrir celles des autres et laisser parler
-        ton imagination.
-      </p>
-
-      <button class="main-button" onclick="showPage('publier')">
-        ✍️ Publier une histoire
-      </button>
-    </section>
-
-
-    <!-- HISTOIRES -->
-    <section id="histoires" class="page">
-      <h2>📚 Les histoires</h2>
-
-      <div id="storyList">
-        <p>Aucune histoire publiée pour le moment.</p>
-      </div>
-    </section>
-
-
-    <!-- PUBLIER UNE HISTOIRE -->
-    <section id="publier" class="page">
-
-      <h2>✍️ Publier une histoire</h2>
-
-      <form id="storyForm">
-
-        <label for="title">
-          Titre de l'histoire
-        </label>
-
-        <input
-          type="text"
-          id="title"
-          placeholder="Ex : Mon rêve en Corée"
-          required
-        >
-
-
-        <label for="author">
-          Nom d'auteur
-        </label>
-
-        <input
-          type="text"
-          id="author"
-          placeholder="Ton pseudo"
-          required
-        >
-
-
-        <label for="description">
-          Description
-        </label>
-
-        <textarea
-          id="description"
-          placeholder="Présente ton histoire en quelques lignes..."
-          required
-        ></textarea>
-
-
-        <label for="content">
-          Ton histoire
-        </label>
-
-        <textarea
-          id="content"
-          rows="12"
-          placeholder="Écris ton histoire ici..."
-          required
-        ></textarea>
-
-
-        <button
-          type="submit"
-          class="main-button"
-        >
-          📖 Publier
-        </button>
-
-      </form>
-
-    </section>
-
-  </main>
-
-
-  <footer>
-    <p>
-      🌸 K-Story — Écris ton histoire, raconte ton rêve.
-    </p>
-  </footer>
-
-
-  <script src="script.js"></script>
-
-</body>
-  </html>html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-Story</title>
-
-  <style>
+  <title>K-Story 🌸</title>  <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #fff5fb;
       color: #333;
@@ -833,404 +22,338 @@ Il était une fois..."
     }
 
     header h1 {
-      font-size: 42px;<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-Story</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<header>
-  <h1>🌸 K-Story</h1>
-  <p>Écris, publie et découvre des histoires ✨</p>
-</header>
-
-<nav>
-  <button onclick="showPage('accueil')">🏠 Accueil</button>
-  <button onclick="showPage('histoires')">📚 Histoires</button>
-  <button onclick="showPage('publier')">✍️ Publier une histoire</button>
-</nav>
-
-<main>
-
-  <!-- ACCUEIL -->
-  <section id="accueil" class="page active">
-    <h2>Bienvenue sur K-Story 💕</h2>
-    <p>
-      Un petit espace pour partager tes histoires,
-      découvrir celles des autres et laisser parler ton imagination.
-    </p>
-
-    <button class="main-button" onclick="showPage('publier')">
-      ✍️ Publier une histoire
-    </button>
-  </section>
-
-  <!-- HISTOIRES -->
-  <section id="histoires" class="page">
-    <h2>📚 Les histoires</h2>
-
-    <div id="storyList">
-      <p>Aucune histoire publiée pour le moment.</p>
-    </div>
-  </section>
-
-  <!-- PUBLIER -->
-  <section id="publier" class="page">
-    <h2>✍️ Publier une histoire</h2>
-
-    <form id="storyForm">
-
-      <label for="title">Titre de l'histoire</label>
-      <input
-        type="text"
-        id="title"
-        placeholder="Ex : Mon rêve en Corée"
-        required
-      >
-
-      <label for="author">Nom d'auteur</label>
-      <input
-        type="text"
-        id="author"
-        placeholder="Ton pseudo"
-        required
-      >
-
-      <label for="description">Description</label>
-      <textarea
-        id="description"
-        placeholder="Présente ton histoire en quelques lignes..."
-        required
-      ></textarea>
-
-      <label for="content">Ton histoire</label>
-      <textarea
-        id="content"
-        rows="12"
-        placeholder="Écris ton histoire ici..."
-        required
-      ></textarea>
-
-      <button type="submit" class="main-button">
-        📖 Publier
-      </button>
-
-    </form>
-  </section>
-
-</main>
-
-<footer>
-  <p>🌸 K-Story — Écris ton histoire, raconte ton rêve.</p>
-</footer>
-
-<script src="script.js"></script>
-
-</body>
-</html>
-      margin-bottom: 8px;
+      margin: 0;
+      font-size: 40px;
     }
 
     header p {
-      font-size: 17px;
+      margin-top: 8px;
+      font-size: 16px;
     }
 
     nav {
       background: white;
-      padding: 15px;
-      text-align: center;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
-    nav a {
-      color: #9b4dca;
-      text-decoration: none;
-      margin: 0 10px;
+    nav button {
+      border: none;
+      background: #f1ddff;
+      color: #7b2cbf;
+      padding: 12px 18px;
+      border-radius: 25px;
+      font-size: 15px;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .container {
+    nav button:hover {
+      background: #dfbaff;
+    }
+
+    .page {
+      display: none;
       max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
+      margin: auto;
+      padding: 30px 18px 60px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .welcome,
+    .writing-page,
+    .reading-page,
+    .story-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     }
 
     .welcome {
-      background: white;
-      padding: 25px;
-      border-radius: 18px;
       text-align: center;
-      margin-bottom: 30px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      padding: 50px 25px;
     }
 
-    .welcome h2 {
+    h2 {
       color: #9b4dca;
-      margin-bottom: 10px;
+      margin-top: 0;
     }
 
-    .stories {
+    .welcome p {
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .main-button,
+    .publish-button,
+    .read-button,
+    .back-button {
+      border: none;
+      background: #9b4dca;
+      color: white;
+      padding: 13px 20px;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 8px 4px;
+    }
+
+    .main-button:hover,
+    .publish-button:hover,
+    .read-button:hover,
+    .back-button:hover {
+      background: #7b2cbf;
+    }
+
+    #storyList {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
     }
 
-    .story {
-      background: white;
-      padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    .story-card h3 {
+      color: #9b4dca;
+      margin-top: 0;
     }
 
-    .story h3 {
-      color: #e6539d;
-      margin-bottom: 10px;
+    .story-card p {
+      line-height: 1.6;
     }
 
-    .story p {
-      line-height: 1.5;
-      margin-bottom: 15px;
+    .author {
+      color: #777;
+      font-style: italic;
     }
 
-    .button {
-      display: inline-block;
-      background: #e6539d;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 20px;
-      text-decoration: none;
+    .description {
+      color: #555;
+    }
+
+    .reading-content {
+      white-space: pre-wrap;
+      line-height: 1.9;
+      font-size: 17px;
+      margin-top: 20px;
+    }
+
+    form label {
+      display: block;
       font-weight: bold;
+      color: #7b2cbf;
+      margin: 18px 0 8px;
     }
 
-    .publish {
-      margin-top: 30px;
+    input,
+    textarea {
+      width: 100%;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #9b4dca;
+    }
+
+    .description-box {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .story-editor {
+      min-height: 550px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .publish-button {
+      width: 100%;
+      margin-top: 20px;
+      font-size: 17px;
+      padding: 16px;
+    }
+
+    .empty {
       background: white;
-      padding: 25px;
-      border-radius: 18px;
+      padding: 30px;
+      border-radius: 20px;
       text-align: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
     }
 
     footer {
-      margin-top: 40px;
-      background: #29213a;
+      background: #28152f;
       color: white;
       text-align: center;
       padding: 25px;
     }
-  </style>
-</head>
 
-<body>
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 32px;
+      }
 
-  <header>
-    <h1>🌸 K-Story 🌸</h1>
-    <p>Lis, écris et partage tes histoires</p>
-  </header>
+      nav button {
+        font-size: 13px;
+        padding: 10px 13px;
+      }
 
-  <nav>
-    <a href="#accueil">Accueil</a>
-    <a href="#histoires">Histoires</a>
-    <a href="#publier">Publier</a>
-  </nav>
+      .page {
+        padding: 20px 12px 45px;
+      }
 
-  <main class="container">
+      .welcome,
+      .writing-page,
+      .reading-page,
+      .story-card {
+        padding: 20px 15px;
+      }
 
-    <section id="accueil" class="welcome">
-      <h2>Bienvenue sur K-Story 💜</h2>
-      <p>
-        Découvre des histoires, imagine de nouveaux mondes
-        et partage tes propres aventures.
-      </p>
-    </section>
+      .story-editor {
+        min-height: 500px;
+      }
+    }
+  </style></head><body><header>
+  <h1>🌸 K-Story</h1>
+  <p>Écris, publie et découvre des histoires ✨</p>
+</header><nav>
+  <button onclick="showPage('accueil')">🏠 Accueil</button>
+  <button onclick="showPage('histoires')">📚 Histoires</button>
+  <button onclick="showPage('publier')">✍️ Publier</button>
+</nav><main>  <!-- ACCUEIL -->  <section id="accueil" class="page active"><div class="welcome">
 
-    <section id="histoires">
-      <h2 style="margin-bottom:20px;">📚 Histoires populaires</h2>
+  <h2>Bienvenue sur K-Story 💕</h2>
 
-      <div class="stories">
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-Story</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+  <p>
+    Ton petit univers pour écrire,
+    publier et découvrir des histoires.
+  </p>
 
-<body>
+  <button
+    class="main-button"
+    onclick="showPage('publier')">
+    ✍️ Écrire une histoire
+  </button>
 
-  <header>
-    <h1>🌸 K-Story</h1>
-    <p>Écris, publie et découvre des histoires ✨</p>
-  </header>
+  <button
+    class="main-button"
+    onclick="showPage('histoires')">
+    📚 Lire les histoires
+  </button>
 
-  <nav>
-    <button onclick="showPage('accueil')">🏠 Accueil</button>
-    <button onclick="showPage('histoires')">📚 Histoires</button>
-    <button onclick="showPage('publier')">✍️ Publier une histoire</button>
-  </nav>
+</div>
 
-  <main>
+  </section>  <!-- HISTOIRES -->  <section id="histoires" class="page"><h2>📚 Toutes les histoires</h2>
 
-    <!-- ACCUEIL -->
-    <section id="accueil" class="page active">
-      <h2>Bienvenue sur K-Story 💕</h2>
+<div id="storyList"></div>
 
-      <p>
-        Un espace pour partager tes histoires,
-        découvrir celles des autres et laisser parler
-        ton imagination.
-      </p>
+  </section>  <!-- LECTURE -->  <section id="lecture" class="page"><button
+  class="back-button"
+  onclick="showPage('histoires')">
+  ← Retour aux histoires
+</button>
 
-      <button class="main-button" onclick="showPage('publier')">
-        ✍️ Publier une histoire
-      </button>
-    </section>
+<article class="reading-page">
 
+  <h2 id="readingTitle"></h2>
 
-    <!-- HISTOIRES -->
-    <section id="histoires" class="page">
-      <h2>📚 Les histoires</h2>
+  <p id="readingAuthor" class="author"></p>
 
-      <div id="storyList">
-        <p>Aucune histoire publiée pour le moment.</p>
-      </div>
-    </section>
+  <p id="readingDescription" class="description"></p>
 
+  <hr>
 
-    <!-- PUBLIER UNE HISTOIRE -->
-    <section id="publier" class="page">
+  <div
+    id="readingContent"
+    class="reading-content">
+  </div>
 
-      <h2>✍️ Publier une histoire</h2>
+</article>
 
-      <form id="storyForm">
+  </section>  <!-- PUBLIER -->  <section id="publier" class="page"><div class="writing-page">
 
-        <label for="title">
-          Titre de l'histoire
-        </label>
+  <h2>✍️ Écrire une histoire</h2>
 
-        <input
-          type="text"
-          id="title"
-          placeholder="Ex : Mon rêve en Corée"
-          required
-        >
+  <form id="storyForm">
 
+    <label for="title">
+      📖 Titre de ton histoire
+    </label>
 
-        <label for="author">
-          Nom d'auteur
-        </label>
-
-        <input
-          type="text"
-          id="author"
-          placeholder="Ton pseudo"
-          required
-        >
+    <input
+      type="text"
+      id="title"
+      placeholder="Ex : Mon rêve en Corée"
+      required
+    >
 
 
-        <label for="description">
-          Description
-        </label>
+    <label for="author">
+      👤 Nom d'auteur
+    </label>
 
-        <textarea
-          id="description"
-          placeholder="Présente ton histoire en quelques lignes..."
-          required
-        ></textarea>
-
-
-        <label for="content">
-          Ton histoire
-        </label>
-
-        <textarea
-          id="content"
-          rows="12"
-          placeholder="Écris ton histoire ici..."
-          required
-        ></textarea>
+    <input
+      type="text"
+      id="author"
+      placeholder="Ton pseudo"
+      required
+    >
 
 
-        <button
-          type="submit"
-          class="main-button"
-        >
-          📖 Publier
-        </button>
+    <label for="description">
+      📝 Description
+    </label>
 
-      </form>
-
-    </section>
-
-  </main>
+    <textarea
+      id="description"
+      class="description-box"
+      placeholder="Présente ton histoire..."
+      required>
+    </textarea>
 
 
-  <footer>
-    <p>
-      🌸 K-Story — Écris ton histoire, raconte ton rêve.
-    </p>
-  </footer>
+    <label for="content">
+      📚 Ton histoire
+    </label>
 
+    <textarea
+      id="content"
+      class="story-editor"
+      placeholder="Commence à écrire ton histoire ici...
 
-  <script src="script.js"></script>
+Chapitre 1
 
-</body>
-  </html>
-        <article class="story">
-          <h3>💗 Un rêve à Séoul</h3>
-          <p>
-            Une jeune fille rêve de devenir actrice et décide
-            de poursuivre son rêve en Corée...
-          </p>
-          <a href="#" class="button">Lire l'histoire</a>
-        </article>
+Il était une fois..."
+required>
+</textarea>
 
-        <article class="story">
-          <h3>🌙 Le secret du lycée</h3>
-          <p>
-            Une nouvelle élève arrive dans un lycée mystérieux
-            où tout le monde semble cacher quelque chose.
-          </p>
-          <a href="#" class="button">Lire l'histoire</a>
-        </article>
+    <button
+      type="submit"
+      class="publish-button">
+      🚀 Publier mon histoire
+    </button>
 
-        <article class="story">
-          <h3>✨ Mon premier drama</h3>
-          <p>
-            Elle pensait simplement participer à un casting.
-            Mais cette audition va changer sa vie...
-          </p>
-          <a href="#" class="button">Lire l'histoire</a>
-        </article>
+  </form>
 
-      </div>
-    </section>
+</div>
 
-    <section id="publier" class="publish">
-      <h2>✍️ Publier une histoire</h2>
-      <p style="margin:15px 0;">
-        Tu veux partager ton imagination avec les lecteurs ?
-      </p>
-
-      <button class="main-button" onclick="showPage('publier')">
-  ✍️ Publier une histoire
-      </button>
-        Publier mon histoire
-      </a>
-    </section>
-
-  </main>
-
-  <footer>
-    <p>🌸 K-Story © 2026</p>
-    <p>Un petit espace pour les amoureux des histoires 💜</p>
-  </footer>
-
-</body>
+  </section></main><footer>
+  <p>
+    🌸 K-Story — Écris ton histoire, raconte ton rêve. ✨
+  </p>
+</footer><script src="script.js"></script></body>
   </html>
