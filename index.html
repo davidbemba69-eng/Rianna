@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K-Story ✨</title>
+  <title>K-Story</title>
 
   <style>
     * {
@@ -19,15 +19,15 @@
     }
 
     header {
-      background: linear-gradient(135deg, #ff75b5, #9b6cff);
+      background: linear-gradient(135deg, #ff6fae, #9b6cff);
       color: white;
       text-align: center;
-      padding: 35px 20px;
+      padding: 30px 15px;
     }
 
     header h1 {
       font-size: 42px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     header p {
@@ -38,109 +38,84 @@
       background: white;
       padding: 15px;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     nav a {
-      color: #9b4d96;
+      color: #9b4dca;
       text-decoration: none;
-      margin: 0 12px;
+      margin: 0 10px;
       font-weight: bold;
     }
 
     .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 25px 15px;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
     }
 
     .welcome {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
       text-align: center;
-      padding: 30px 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
     .welcome h2 {
-      color: #9b4d96;
-      margin-bottom: 12px;
+      color: #9b4dca;
+      margin-bottom: 10px;
     }
 
     .stories {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      margin-top: 20px;
     }
 
     .story {
       background: white;
-      border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-radius: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
     .story h3 {
-      color: #e05b9f;
+      color: #e6539d;
       margin-bottom: 10px;
     }
 
     .story p {
-      line-height: 1.6;
+      line-height: 1.5;
       margin-bottom: 15px;
     }
 
-    button {
-      border: none;
-      background: #e05b9f;
+    .button {
+      display: inline-block;
+      background: #e6539d;
       color: white;
       padding: 10px 18px;
       border-radius: 20px;
-      cursor: pointer;
+      text-decoration: none;
       font-weight: bold;
     }
 
-    button:hover {
-      background: #c84688;
-    }
-
     .publish {
+      margin-top: 30px;
       background: white;
-      margin-top: 35px;
       padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .publish h2 {
-      color: #9b4d96;
-      margin-bottom: 20px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 15px;
-    }
-
-    textarea {
-      min-height: 150px;
-      resize: vertical;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
     footer {
       margin-top: 40px;
-      background: #9b6cff;
+      background: #29213a;
       color: white;
       text-align: center;
-      padding: 20px;
-    }
-
-    .message {
-      margin-top: 15px;
-      color: #9b4d96;
-      font-weight: bold;
+      padding: 25px;
     }
   </style>
 </head>
@@ -148,4 +123,78 @@
 <body>
 
   <header>
-    <h1>🌸 K-Story 🌸</h1
+    <h1>🌸 K-Story 🌸</h1>
+    <p>Lis, écris et partage tes histoires</p>
+  </header>
+
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#histoires">Histoires</a>
+    <a href="#publier">Publier</a>
+  </nav>
+
+  <main class="container">
+
+    <section id="accueil" class="welcome">
+      <h2>Bienvenue sur K-Story 💜</h2>
+      <p>
+        Découvre des histoires, imagine de nouveaux mondes
+        et partage tes propres aventures.
+      </p>
+    </section>
+
+    <section id="histoires">
+      <h2 style="margin-bottom:20px;">📚 Histoires populaires</h2>
+
+      <div class="stories">
+
+        <article class="story">
+          <h3>💗 Un rêve à Séoul</h3>
+          <p>
+            Une jeune fille rêve de devenir actrice et décide
+            de poursuivre son rêve en Corée...
+          </p>
+          <a href="#" class="button">Lire l'histoire</a>
+        </article>
+
+        <article class="story">
+          <h3>🌙 Le secret du lycée</h3>
+          <p>
+            Une nouvelle élève arrive dans un lycée mystérieux
+            où tout le monde semble cacher quelque chose.
+          </p>
+          <a href="#" class="button">Lire l'histoire</a>
+        </article>
+
+        <article class="story">
+          <h3>✨ Mon premier drama</h3>
+          <p>
+            Elle pensait simplement participer à un casting.
+            Mais cette audition va changer sa vie...
+          </p>
+          <a href="#" class="button">Lire l'histoire</a>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="publier" class="publish">
+      <h2>✍️ Publier une histoire</h2>
+      <p style="margin:15px 0;">
+        Tu veux partager ton imagination avec les lecteurs ?
+      </p>
+
+      <a href="mailto:kstory@example.com" class="button">
+        Publier mon histoire
+      </a>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>🌸 K-Story © 2026</p>
+    <p>Un petit espace pour les amoureux des histoires 💜</p>
+  </footer>
+
+</body>
+  </html>
