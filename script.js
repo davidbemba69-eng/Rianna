@@ -1,37 +1,40 @@
 // ======================================================
 // K-STORY — script.js
+// Navigation + publication + lecture + recherche
 // ======================================================
 
 const STORAGE_KEY = "kstory_stories";
 const CURRENT_STORY_KEY = "kstory_current_story";
 
 // ======================================================
-// NAVIGATION
+// NAVIGATION ENTRE LES PAGES
 // ======================================================
 
 function showPage(pageId) {
 
-const pages = document.querySelectorAll(".page");
+    const pages = document.querySelectorAll(".page");
 
-pages.forEach(function(page) {
-    page.classList.remove("active");
-});
+    pages.forEach(function(page) {
+        page.classList.remove("active");
+    });
 
-const selectedPage = document.getElementById(pageId);
+    const selectedPage = document.getElementById(pageId);
 
-if (selectedPage) {
+    if (!selectedPage) {
+        console.error("Page introuvable :", pageId);
+        return;
+    }
+
     selectedPage.classList.add("active");
-}
 
-window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-});
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-if (pageId === "histoires") {
-    displayStories();
-}
-
+    if (pageId === "histoires") {
+        displayStories();
+    }
 }
 
 // ======================================================
@@ -40,23 +43,30 @@ if (pageId === "histoires") {
 
 function getStories() {
 
-try {
+    try {
 
-    const stories = localStorage.getItem(STORAGE_KEY);
+        const savedStories =
+            localStorage.getItem(STORAGE_KEY);
 
-    if (!stories) {
+        if (!savedStories) {
+            return [];
+        }
+
+        const stories = JSON.parse(savedStories);
+
+        return Array.isArray(stories)
+            ? stories
+            : [];
+
+    } catch (error) {
+
+        console.error(
+            "Impossible de récupérer les histoires :",
+            error
+        );
+
         return [];
     }
-
-    return JSON.parse(stories);
-
-} catch (error) {
-
-    console.error("Erreur :", error);
-
-    return [];
-}
-
 }
 
 // ======================================================
@@ -65,11 +75,24 @@ try {
 
 function saveStories(stories) {
 
-localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(stories)
-);
+    try {
 
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(stories)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Impossible de sauvegarder les histoires :",
+            error
+        );
+
+        alert(
+            "⚠️ Impossible de sauvegarder cette histoire sur cet appareil."
+        );
+    }
 }
 
 // ======================================================
@@ -78,12 +101,11 @@ localStorage.setItem(
 
 function escapeHTML(text) {
 
-const div = document.createElement("div");
+    const div = document.createElement("div");
 
-div.textContent = text || "";
+    div.textContent = text || "";
 
-return div.innerHTML;
-
+    return div.innerHTML;
 }
 
 // ======================================================
@@ -92,66 +114,78 @@ return div.innerHTML;
 
 function displayStories() {
 
-const container = document.getElementById("storyList");
+    const container =
+        document.getElementById("storyList");
 
-if (!container) {
-    return;
-}
+    if (!container) {
+        return;
+    }
 
-const stories = getStories();
+    const stories = getStories();
 
-if (stories.length === 0) {
+    if (stories.length === 0) {
 
-    container.innerHTML = `
-        <div class="empty">
-            <h3>📖 Aucune histoire publiée</h3>
+        container.innerHTML = `
+            <div class="empty">
+                <h3>📖 Aucune histoire publiée</h3>
+
+                <p>
+                    Sois la première à publier
+                    une histoire sur K-Story !
+                </p>
+
+                <button
+                    class="main-button"
+                    onclick="showPage('publier')">
+                    ✍️ Écrire une histoire
+                </button>
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    stories.forEach(function(story, index) {
+
+        const card =
+            document.createElement("article");
+
+        card.className = "story-card";
+
+        card.innerHTML = `
+            <h3>
+                📖 ${escapeHTML(story.title)}
+            </h3>
+
+            <p class="author">
+                ✍️ Par ${escapeHTML(
+                    story.author || "Auteur"
+                )}
+            </p>
+
+            <p class="description">
+                ${escapeHTML(
+                    story.description ||
+                    "Une nouvelle histoire à découvrir..."
+                )}
+            </p>
 
             <p>
-                Sois la première à publier
-                une histoire sur K-Story !
+                📅 ${escapeHTML(story.date || "")}
             </p>
-        </div>
-    `;
 
-    return;
-}
+            <button
+                type="button"
+                class="read-button"
+                onclick="readStory(${index})">
+                📖 Lire l'histoire
+            </button>
+        `;
 
-container.innerHTML = "";
-
-stories.forEach(function(story, index) {
-
-    const card = document.createElement("article");
-
-    card.className = "story-card";
-
-    card.innerHTML = `
-        <h3>
-            📖 ${escapeHTML(story.title)}
-        </h3>
-
-        <p class="author">
-            ✍️ Par ${escapeHTML(
-                story.author || "Auteur"
-            )}
-        </p>
-
-        <p>
-            ${escapeHTML(
-                story.description ||
-                "Une nouvelle histoire à découvrir..."
-            )}
-        </p>
-
-        <button
-            class="read-button"
-            onclick="readStory(${index})">
-            📖 Lire l'histoire
-        </button>
-    `;
-
-    container.appendChild(card);
-});
-
+        container.appendChild(card);
+    });
 }
 
 // ======================================================
@@ -160,126 +194,122 @@ stories.forEach(function(story, index) {
 
 function publishStory() {
 
-const titleInput =
-    document.getElementById("title");
+    const titleInput =
+        document.getElementById("title");
 
-const authorInput =
-    document.getElementById("author");
+    const authorInput =
+        document.getElementById("author");
 
-const descriptionInput =
-    document.getElementById("description");
+    const descriptionInput =
+        document.getElementById("description");
 
-const contentInput =
-    document.getElementById("content");
+    const contentInput =
+        document.getElementById("content");
 
+    if (
+        !titleInput ||
+        !authorInput ||
+        !descriptionInput ||
+        !contentInput
+    ) {
 
-if (
-    !titleInput ||
-    !authorInput ||
-    !descriptionInput ||
-    !contentInput
-) {
+        alert(
+            "⚠️ Le formulaire d'histoire est introuvable."
+        );
+
+        return;
+    }
+
+    const title =
+        titleInput.value.trim();
+
+    const author =
+        authorInput.value.trim();
+
+    const description =
+        descriptionInput.value.trim();
+
+    const content =
+        contentInput.value.trim();
+
+    if (!title) {
+
+        alert(
+            "⚠️ Écris le titre de ton histoire."
+        );
+
+        titleInput.focus();
+
+        return;
+    }
+
+    if (!author) {
+
+        alert(
+            "⚠️ Écris ton nom d'auteur."
+        );
+
+        authorInput.focus();
+
+        return;
+    }
+
+    if (!description) {
+
+        alert(
+            "⚠️ Ajoute une description."
+        );
+
+        descriptionInput.focus();
+
+        return;
+    }
+
+    if (!content) {
+
+        alert(
+            "⚠️ Écris ton histoire."
+        );
+
+        contentInput.focus();
+
+        return;
+    }
+
+    const newStory = {
+
+        id: Date.now(),
+
+        title: title,
+
+        author: author,
+
+        description: description,
+
+        content: content,
+
+        date: new Date()
+            .toLocaleDateString("fr-FR")
+    };
+
+    const stories = getStories();
+
+    stories.unshift(newStory);
+
+    saveStories(stories);
+
+    const form =
+        document.getElementById("storyForm");
+
+    if (form) {
+        form.reset();
+    }
 
     alert(
-        "⚠️ Le formulaire d'histoire est introuvable."
+        "🎉 Ton histoire a été publiée !"
     );
 
-    return;
-}
-
-
-const title =
-    titleInput.value.trim();
-
-const author =
-    authorInput.value.trim();
-
-const description =
-    descriptionInput.value.trim();
-
-const content =
-    contentInput.value.trim();
-
-
-if (!title) {
-
-    alert(
-        "⚠️ Écris le titre de ton histoire."
-    );
-
-    return;
-}
-
-
-if (!author) {
-
-    alert(
-        "⚠️ Écris ton nom d'auteur."
-    );
-
-    return;
-}
-
-
-if (!description) {
-
-    alert(
-        "⚠️ Ajoute une description."
-    );
-
-    return;
-}
-
-
-if (!content) {
-
-    alert(
-        "⚠️ Écris ton histoire."
-    );
-
-    return;
-}
-
-
-const newStory = {
-
-    title: title,
-
-    author: author,
-
-    description: description,
-
-    content: content,
-
-    date: new Date()
-        .toLocaleDateString("fr-FR")
-};
-
-
-const stories = getStories();
-
-stories.unshift(newStory);
-
-saveStories(stories);
-
-
-const form =
-    document.getElementById("storyForm");
-
-if (form) {
-    form.reset();
-}
-
-
-alert(
-    "🎉 Ton histoire a été publiée sur K-Story !"
-);
-
-
-displayStories();
-
-showPage("histoires");
-
+    showPage("histoires");
 }
 
 // ======================================================
@@ -288,46 +318,56 @@ showPage("histoires");
 
 function readStory(index) {
 
-const stories = getStories();
+    const stories = getStories();
 
-if (!stories[index]) {
+    const story = stories[index];
 
-    alert(
-        "⚠️ Cette histoire n'existe pas."
-    );
+    if (!story) {
 
-    return;
-}
+        alert(
+            "⚠️ Cette histoire n'existe pas."
+        );
 
+        return;
+    }
 
-localStorage.setItem(
-    CURRENT_STORY_KEY,
-    JSON.stringify(stories[index])
-);
+    try {
 
+        localStorage.setItem(
+            CURRENT_STORY_KEY,
+            JSON.stringify(story)
+        );
 
-// Afficher directement la page de lecture
-const story = stories[index];
+    } catch (error) {
 
-const title =
-    document.getElementById("readingTitle");
+        console.error(error);
+    }
 
-const author =
-    document.getElementById("readingAuthor");
+    const title =
+        document.getElementById("readingTitle");
 
-const description =
-    document.getElementById("readingDescription");
+    const author =
+        document.getElementById("readingAuthor");
 
-const content =
-    document.getElementById("readingContent");
+    const description =
+        document.getElementById("readingDescription");
 
+    const content =
+        document.getElementById("readingContent");
 
-if (
-    title &&
-    author &&
-    description &&
-    content
-) {
+    if (
+        !title ||
+        !author ||
+        !description ||
+        !content
+    ) {
+
+        alert(
+            "⚠️ La page de lecture est introuvable."
+        );
+
+        return;
+    }
 
     title.textContent =
         story.title || "Sans titre";
@@ -345,132 +385,120 @@ if (
         ).replace(/\n/g, "<br>");
 
     showPage("lecture");
-
-    return;
-}
-
-
-// Solution de secours si lecture externe
-window.location.href = "lire.html";
-
 }
 
 // ======================================================
-// RECHERCHE
+// RECHERCHE DES HISTOIRES
 // ======================================================
 
 function searchStories() {
 
-const searchInput =
-    document.getElementById("searchInput");
+    const searchInput =
+        document.getElementById("searchInput");
 
-const container =
-    document.getElementById("storyList");
+    const container =
+        document.getElementById("storyList");
 
+    if (!searchInput || !container) {
+        return;
+    }
 
-if (!searchInput || !container) {
-    return;
-}
+    const search =
+        searchInput.value
+            .toLowerCase()
+            .trim();
 
+    const stories = getStories();
 
-const search =
-    searchInput.value
-        .toLowerCase()
-        .trim();
+    if (!search) {
 
+        displayStories();
 
-const stories = getStories();
+        return;
+    }
 
+    const results =
+        stories.filter(function(story) {
 
-const results =
-    stories.filter(function(story) {
+            return (
 
-        return (
+                (story.title || "")
+                    .toLowerCase()
+                    .includes(search)
 
-            (story.title || "")
-                .toLowerCase()
-                .includes(search)
+                ||
 
-            ||
+                (story.author || "")
+                    .toLowerCase()
+                    .includes(search)
 
-            (story.author || "")
-                .toLowerCase()
-                .includes(search)
+                ||
 
-            ||
+                (story.description || "")
+                    .toLowerCase()
+                    .includes(search)
+            );
+        });
 
-            (story.description || "")
-                .toLowerCase()
-                .includes(search)
-        );
-    });
+    container.innerHTML = "";
 
+    if (results.length === 0) {
 
-container.innerHTML = "";
+        container.innerHTML = `
+            <div class="empty">
 
+                <h3>
+                    🔎 Aucune histoire trouvée
+                </h3>
 
-if (results.length === 0) {
+                <p>
+                    Essaie avec un autre mot.
+                </p>
 
-    container.innerHTML = `
-        <div class="empty">
+            </div>
+        `;
 
+        return;
+    }
+
+    results.forEach(function(story) {
+
+        const originalIndex =
+            stories.indexOf(story);
+
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "story-card";
+
+        card.innerHTML = `
             <h3>
-                🔎 Aucune histoire trouvée
+                📖 ${escapeHTML(story.title)}
             </h3>
 
-            <p>
-                Essaie avec un autre mot.
+            <p class="author">
+                ✍️ Par ${escapeHTML(
+                    story.author || "Auteur"
+                )}
             </p>
 
-        </div>
-    `;
+            <p class="description">
+                ${escapeHTML(
+                    story.description || ""
+                )}
+            </p>
 
-    return;
-}
+            <button
+                type="button"
+                class="read-button"
+                onclick="readStory(${originalIndex})">
+                📖 Lire l'histoire
+            </button>
+        `;
 
-
-results.forEach(function(story) {
-
-    const originalIndex =
-        stories.indexOf(story);
-
-
-    const card =
-        document.createElement("article");
-
-
-    card.className =
-        "story-card";
-
-
-    card.innerHTML = `
-        <h3>
-            📖 ${escapeHTML(story.title)}
-        </h3>
-
-        <p class="author">
-            ✍️ Par ${escapeHTML(
-                story.author || "Auteur"
-            )}
-        </p>
-
-        <p>
-            ${escapeHTML(
-                story.description || ""
-            )}
-        </p>
-
-        <button
-            class="read-button"
-            onclick="readStory(${originalIndex})">
-            📖 Lire l'histoire
-        </button>
-    `;
-
-
-    container.appendChild(card);
-});
-
+        container.appendChild(card);
+    });
 }
 
 // ======================================================
@@ -478,42 +506,49 @@ results.forEach(function(story) {
 // ======================================================
 
 document.addEventListener(
-"DOMContentLoaded",
-function() {
+    "DOMContentLoaded",
+    function() {
 
-    displayStories();
+        // Afficher les histoires
+        displayStories();
 
+        // Recherche
+        const searchInput =
+            document.getElementById("searchInput");
 
-    const searchInput =
-        document.getElementById("searchInput");
+        if (searchInput) {
 
+            searchInput.addEventListener(
+                "input",
+                searchStories
+            );
+        }
 
-    if (searchInput) {
+        // Formulaire
+        const storyForm =
+            document.getElementById("storyForm");
 
-        searchInput.addEventListener(
-            "input",
-            searchStories
-        );
+        if (storyForm) {
+
+            storyForm.addEventListener(
+                "submit",
+                function(event) {
+
+                    event.preventDefault();
+
+                    publishStory();
+                }
+            );
+        }
+
     }
-
-
-    const storyForm =
-        document.getElementById("storyForm");
-
-
-    if (storyForm) {
-
-        storyForm.addEventListener(
-            "submit",
-            function(event) {
-
-                event.preventDefault();
-
-                publishStory();
-            }
-        );
-    }
-
-}
-
 );
+
+// ======================================================
+// RENDRE LES FONCTIONS ACCESSIBLES AUX BOUTONS HTML
+// ======================================================
+
+window.showPage = showPage;
+window.publishStory = publishStory;
+window.readStory = readStory;
+window.searchStories = searchStories;
