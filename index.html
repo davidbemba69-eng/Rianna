@@ -22,7 +22,174 @@
   </nav>
 
   <main>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-Story</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+<header class="header">
+  <h1>🌸 K-Story</h1>
+  <p>Ton univers pour écrire et découvrir des histoires</p>
+</header>
+
+<nav class="navbar">
+  <button onclick="showPage('accueil')">🏠 Accueil</button>
+  <button onclick="showPage('histoires')">📚 Histoires</button>
+  <button onclick="showPage('publier')">✍️ Publier</button>
+</nav>
+
+<main>
+
+  <!-- ACCUEIL -->
+  <section id="accueil" class="page active">
+
+    <div class="welcome">
+      <h2>Bienvenue sur K-Story 💕</h2>
+
+      <p>
+        Écris tes propres histoires, publie-les et
+        découvre celles des autres.
+      </p>
+
+      <button
+        class="big-button"
+        onclick="showPage('histoires')">
+        📚 Découvrir les histoires
+      </button>
+
+      <button
+        class="big-button"
+        onclick="showPage('publier')">
+        ✍️ Écrire une histoire
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- HISTOIRES -->
+  <section id="histoires" class="page">
+
+    <h2>📚 Toutes les histoires</h2>
+
+    <div id="storyList"></div>
+
+  </section>
+
+
+  <!-- LECTURE -->
+  <section id="lecture" class="page">
+
+    <button
+      class="back-button"
+      onclick="showPage('histoires')">
+      ← Retour aux histoires
+    </button>
+
+    <article class="reading-page">
+
+      <h2 id="readingTitle"></h2>
+
+      <p id="readingAuthor" class="author"></p>
+
+      <p id="readingDescription" class="description"></p>
+
+      <hr>
+
+      <div id="readingContent" class="reading-content"></div>
+
+    </article>
+
+  </section>
+
+
+  <!-- PUBLICATION -->
+  <section id="publier" class="page">
+
+    <div class="writing-page">
+
+      <h2>✍️ Écrire une histoire</h2>
+
+      <form id="storyForm">
+
+        <label for="title">
+          Titre de ton histoire
+        </label>
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Ex : Mon rêve en Corée"
+          required
+        >
+
+
+        <label for="author">
+          Ton nom d'auteur
+        </label>
+
+        <input
+          type="text"
+          id="author"
+          placeholder="Ex : Henriana"
+          required
+        >
+
+
+        <label for="description">
+          Description
+        </label>
+
+        <textarea
+          id="description"
+          class="description-box"
+          placeholder="Présente ton histoire..."
+          required
+        ></textarea>
+
+
+        <label for="content">
+          Écris ton histoire
+        </label>
+
+        <textarea
+          id="content"
+          class="story-editor"
+          placeholder="Commence ton histoire ici..."
+          required
+        ></textarea>
+
+
+        <button
+          type="submit"
+          class="publish-button">
+          📖 Publier mon histoire
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+  <p>🌸 K-Story — Écris ton histoire, raconte ton rêve.</p>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+  </html>
     <!-- ACCUEIL -->
     <section id="accueil" class="page active">
       <h2>Bienvenue sur K-Story 💕</h2>
