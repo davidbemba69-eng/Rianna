@@ -551,4 +551,50 @@ document.addEventListener(
 window.showPage = showPage;
 window.publishStory = publishStory;
 window.readStory = readStory;
-window.searchStories = searchStories;
+window.searchStories = searchStories;// ======================================================
+// AJOUTER UNE IMAGE DANS L'HISTOIRE
+// ======================================================
+
+const imageButton = document.getElementById("imageButton");
+const storyImageInput = document.getElementById("storyImageInput");
+const imagePreview = document.getElementById("imagePreview");
+
+if (imageButton && storyImageInput) {
+
+    imageButton.addEventListener("click", function () {
+        storyImageInput.click();
+    });
+
+    storyImageInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            alert("Veuillez choisir une image.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+
+            imagePreview.innerHTML = `
+                <div class="story-image">
+                    <img src="${event.target.result}"
+                         alt="Illustration de l'histoire">
+                </div>
+            `;
+
+            imagePreview.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
