@@ -493,4 +493,11 @@ footer {
   .page {
     padding: 18px;
   }
-  }
+  }.story-reading-image {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 15px;
+}
