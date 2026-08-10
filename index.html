@@ -1,46 +1,14 @@
-<div class="image-button-container">
-    <button type="button" id="imageButton" class="image-button">
-        🖼️ Ajouter une image
-    </button>
-
-    <input
-        type="file"
-        id="storyImageInput"
-        accept="image/*"
-        hidden
-    >
-</div>
-
-<div id="imagePreview"></div>
-
-<textarea
-    id="storyContent"
-    placeholder="Écris ton histoire ici..."
-></textarea><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>K-Story 🌸</title>
 
     <style>
-
-        /* ==================================================
-           RÉGLAGES GÉNÉRAUX
-        ================================================== */
-
         * {
             box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
@@ -50,878 +18,548 @@
             color: #333;
         }
 
+        button {
+            border: none;
+            cursor: pointer;
+        }
 
-        /* ==================================================
-           HEADER
-        ================================================== */
+        /* =========================
+           EN-TÊTE
+        ========================= */
 
         header {
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff6fae,
-                    #9b6cff
-                );
-
+            background: linear-gradient(135deg, #ff4fa3, #9b4dff);
             color: white;
             text-align: center;
-            padding: 35px 15px;
+            padding: 25px 15px;
         }
 
         header h1 {
             margin: 0;
-            font-size: 42px;
+            font-size: 32px;
         }
 
         header p {
-            margin: 10px 0 0;
+            margin: 8px 0 0;
             font-size: 16px;
         }
 
-
-        /* ==================================================
-           NAVIGATION
-        ================================================== */
+        /* =========================
+           MENU
+        ========================= */
 
         nav {
-            background: white;
-            padding: 12px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.10);
-
+            gap: 8px;
+            padding: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 10;
         }
 
         nav button {
-            border: none;
-            background: #f1ddff;
-            color: #7b2cbf;
-
-            padding: 12px 18px;
-
-            border-radius: 25px;
-
-            font-size: 15px;
+            background: #f3e7ff;
+            color: #7a35b8;
+            padding: 10px 14px;
+            border-radius: 20px;
             font-weight: bold;
-
-            cursor: pointer;
-
-            transition:
-                0.2s ease;
         }
 
         nav button:hover {
-            background: #dfbaff;
-            transform: translateY(-2px);
+            background: #e5ccff;
         }
 
-
-        /* ==================================================
+        /* =========================
            PAGES
-        ================================================== */
+        ========================= */
 
         .page {
             display: none;
-
-            max-width: 950px;
-
+            max-width: 900px;
             margin: auto;
-
-            padding:
-                30px 18px 60px;
+            padding: 20px 15px 50px;
         }
 
         .page.active {
             display: block;
         }
 
-
-        /* ==================================================
-           CARTES
-        ================================================== */
-
-        .welcome,
-        .writing-page,
-        .reading-page,
-        .story-card,
-        .empty {
-
-            background: white;
-
-            border-radius: 20px;
-
-            padding: 25px;
-
-            box-shadow:
-                0 4px 18px
-                rgba(0, 0, 0, 0.08);
-        }
-
-
-        /* ==================================================
+        /* =========================
            ACCUEIL
-        ================================================== */
+        ========================= */
 
         .welcome {
             text-align: center;
-            padding: 55px 25px;
+            padding: 35px 10px;
         }
 
         .welcome h2 {
-            margin-top: 0;
+            color: #c8328c;
+            font-size: 28px;
         }
 
         .welcome p {
             font-size: 17px;
-            line-height: 1.8;
+            line-height: 1.6;
         }
 
-        .welcome-buttons {
-            margin-top: 25px;
-        }
-
-
-        /* ==================================================
-           TITRES
-        ================================================== */
-
-        h2 {
-            color: #9b4dca;
-            margin-top: 0;
-        }
-
-        h3 {
-            color: #9b4dca;
-        }
-
-
-        /* ==================================================
-           BOUTONS
-        ================================================== */
-
-        .main-button,
-        .publish-button,
-        .read-button,
-        .back-button {
-
-            border: none;
-
-            background: #9b4dca;
-
+        .main-button {
+            background: linear-gradient(135deg, #ff4fa3, #9b4dff);
             color: white;
-
-            padding: 13px 20px;
-
-            border-radius: 25px;
-
-            font-size: 15px;
-
-            cursor: pointer;
-
-            margin: 8px 4px;
-
-            transition:
-                0.2s ease;
-        }
-
-        .main-button:hover,
-        .publish-button:hover,
-        .read-button:hover,
-        .back-button:hover {
-
-            background: #7b2cbf;
-
-            transform:
-                translateY(-2px);
-        }
-
-
-        /* ==================================================
-           RECHERCHE
-        ================================================== */
-
-        .search-box {
-
-            background: white;
-
-            padding: 18px;
-
-            border-radius: 18px;
-
-            margin-bottom: 25px;
-
-            box-shadow:
-                0 3px 12px
-                rgba(0, 0, 0, 0.06);
-        }
-
-        .search-box label {
-
-            display: block;
-
-            font-weight: bold;
-
-            color: #7b2cbf;
-
-            margin-bottom: 8px;
-        }
-
-        #searchInput {
-
-            width: 100%;
-
-            border:
-                2px solid #ddd;
-
-            border-radius: 12px;
-
-            padding: 14px;
-
-            font-size: 16px;
-
-            outline: none;
-        }
-
-        #searchInput:focus {
-
-            border-color:
-                #9b4dca;
-        }
-
-
-        /* ==================================================
-           LISTE DES HISTOIRES
-        ================================================== */
-
-        #storyList {
-
-            display: grid;
-
-            gap: 20px;
-        }
-
-        .story-card h3 {
-
-            margin-top: 0;
-
-            color: #9b4dca;
-        }
-
-        .story-card p {
-
-            line-height: 1.7;
-        }
-
-        .author {
-
-            color: #777;
-
-            font-style: italic;
-        }
-
-        .description {
-
-            color: #555;
-        }
-
-
-        /* ==================================================
-           PAGE DE LECTURE
-        ================================================== */
-
-        .reading-page {<div id="readImage"></div>
-
-<div id="readContent"></div>
-
-            padding:
-                30px 25px;
-        }
-
-        .reading-page h2 {
-
-            font-size: 30px;
-
-            line-height: 1.3;
-        }
-
-        .reading-content {
-
-            white-space: pre-wrap;
-
-            line-height: 1.9;
-
-            font-size: 18px;
-
-            margin-top: 25px;
-
-            overflow-wrap: break-word;
-        }
-
-        .reading-page hr {
-
-            border: none;
-
-            border-top:
-                1px solid #eee;
-
-            margin:
-                25px 0;
-        }
-
-
-        /* ==================================================
-           PAGE D'ÉCRITURE
-        ================================================== */
-
-        .writing-page h2 {
-
-            margin-bottom:
-                25px;
-        }
-
-        form label {
-
-            display: block;
-
-            font-weight: bold;
-
-            color: #7b2cbf;
-
-            margin:
-                18px 0 8px;
-        }
-
-        input,
-        textarea {
-
-            width: 100%;
-
-            border:
-                2px solid #ddd;
-
-            border-radius: 12px;
-
-            padding: 14px;
-
-            font-size: 16px;
-
-            font-family:
-                Arial, sans-serif;
-
-            outline: none;
-        }
-
-        input:focus,
-        textarea:focus {
-
-            border-color:
-                #9b4dca;
-        }
-
-        .description-box {
-
-            min-height: 130px;
-
-            resize: vertical;
-        }
-
-        .story-editor {
-
-            min-height: 650px;
-
-            resize: vertical;
-
-            line-height: 1.8;
-
+            padding: 14px 25px;
+            border-radius: 30px;
             font-size: 17px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* =========================
+           ÉCRITURE
+        ========================= */
+
+        .editor-box {
+            background: white;
+            padding: 18px;
+            border-radius: 18px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .editor-box h2 {
+            margin-top: 0;
+            color: #c8328c;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 7px;
+            color: #633b73;
+        }
+
+        #storyTitle {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ead8f4;
+            border-radius: 12px;
+            font-size: 20px;
+            outline: none;
+        }
+
+        #storyTitle:focus,
+        #storyText:focus {
+            border-color: #c85be9;
+        }
+
+        /* IMAGE DE L'HISTOIRE */
+
+        .image-button {
+            display: inline-block;
+            background: #f2ddff;
+            color: #7b35a6;
+            padding: 11px 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        #imagePreviewContainer {
+            display: none;
+            margin: 10px 0 18px;
+            text-align: center;
+        }
+
+        #imagePreview {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            display: block;
+        }
+
+        #removeImageButton {
+            background: #ff5c8a;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        /* ZONE D'ÉCRITURE */
+
+        #storyText {
+            width: 100%;
+            min-height: 450px;
+            resize: vertical;
+            padding: 16px;
+            border: 2px solid #ead8f4;
+            border-radius: 14px;
+            font-family: Arial, sans-serif;
+            font-size: 17px;
+            line-height: 1.7;
+            outline: none;
+        }
+
+        .editor-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .save-button {
+            background: #9b4dff;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 25px;
+            font-weight: bold;
         }
 
         .publish-button {
+            background: #ff4fa3;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
 
+        .new-button {
+            background: #eee;
+            color: #555;
+            padding: 13px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           LECTURE
+        ========================= */
+
+        #storiesList {
+            display: grid;
+            gap: 18px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .story-card img {
             width: 100%;
-
-            margin-top: 25px;
-
-            font-size: 17px;
-
-            padding: 16px;
+            height: 220px;
+            object-fit: cover;
         }
 
-
-        /* ==================================================
-           MESSAGE VIDE
-        ================================================== */
-
-        .empty {
-
-            text-align: center;
-
-            padding:
-                40px 25px;
+        .story-card-content {
+            padding: 18px;
         }
 
-        .empty h3 {
-
+        .story-card h3 {
+            color: #b7358a;
             margin-top: 0;
         }
 
-
-        /* ==================================================
-           FOOTER
-        ================================================== */
-
-        footer {
-
-            background: #28152f;
-
-            color: white;
-
-            text-align: center;
-
-            padding: 25px;
-
-            margin-top: 30px;
+        .story-card p {
+            white-space: pre-wrap;
+            line-height: 1.6;
         }
 
+        .read-button {
+            background: #9b4dff;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
 
-        /* ==================================================
+        .delete-button {
+            background: #ff5c5c;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            color: #777;
+        }
+
+        /* =========================
+           LECTURE D'UNE HISTOIRE
+        ========================= */
+
+        #reader {
+            background: white;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        #readerTitle {
+            color: #c8328c;
+            font-size: 30px;
+            margin-top: 0;
+        }
+
+        #readerImage {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 10px 0 20px;
+            display: none;
+        }
+
+        #readerText {
+            white-space: pre-wrap;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        /* =========================
            MOBILE
-        ================================================== */
+        ========================= */
 
         @media (max-width: 600px) {
 
             header h1 {
-
-                font-size: 32px;
-            }
-
-            header p {
-
-                font-size: 14px;
+                font-size: 27px;
             }
 
             nav {
-
-                padding: 10px 6px;
+                gap: 5px;
+                overflow-x: auto;
+                justify-content: flex-start;
             }
 
             nav button {
-
-                font-size: 13px;
-
-                padding:
-                    10px 13px;
+                white-space: nowrap;
+                font-size: 14px;
+                padding: 9px 12px;
             }
 
             .page {
-
-                padding:
-                    20px 12px 45px;
+                padding: 15px 10px 40px;
             }
 
-            .welcome,
-            .writing-page,
-            .reading-page,
-            .story-card,
-            .empty {
-
-                padding:
-                    20px 15px;
+            #storyText {
+                min-height: 500px;
+                font-size: 16px;
             }
 
-            .welcome {
-
-                padding:
-                    40px 18px;
+            #storyTitle {
+                font-size: 18px;
             }
 
-            .story-editor {
-
-                min-height: 550px;
+            .editor-buttons button {
+                width: 100%;
             }
 
-            .reading-content {
-
-                font-size: 17px;
-            }
-
-            .main-button,
-            .publish-button,
-            .read-button,
-            .back-button {
-
-                font-size: 14px;
+            #readerTitle {
+                font-size: 25px;
             }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- ==================================================
-         HEADER
-    ================================================== -->
+    <!-- =========================
+         EN-TÊTE
+    ========================= -->
 
     <header>
-
         <h1>🌸 K-Story</h1>
-
-        <p>
-            Écris, publie et découvre des histoires ✨
-        </p>
-
+        <p>Écris, publie et découvre des histoires ✨</p>
     </header>
 
-
-    <!-- ==================================================
-         NAVIGATION
-    ================================================== -->
+    <!-- =========================
+         MENU
+    ========================= -->
 
     <nav>
-
-        <button
-            type="button"
-            onclick="showPage('accueil')">
-
-            🏠 Accueil
-
-        </button>
-
-
-        <button
-            type="button"
-            onclick="showPage('histoires')">
-
-            📚 Histoires
-
-        </button>
-
-
-        <button
-            type="button"
-            onclick="showPage('publier')">
-
-            ✍️ Écrire
-
-        </button>
-
+        <button onclick="showPage('homePage')">🏠 Accueil</button>
+        <button onclick="showPage('writePage')">✍️ Histoire</button>
+        <button onclick="showPage('readPage'); displayStories()">📚 Lire</button>
     </nav>
 
+    <!-- =========================
+         ACCUEIL
+    ========================= -->
 
-    <!-- ==================================================
-         CONTENU PRINCIPAL
-    ================================================== -->
+    <section id="homePage" class="page active">
 
-    <main>
+        <div class="welcome">
 
+            <h2>Bienvenue sur K-Story 🌸</h2>
 
-        <!-- ==================================================
-             ACCUEIL
-        ================================================== -->
+            <p>
+                Crée tes propres histoires, ajoute une image,
+                sauvegarde-les et relis-les quand tu veux.
+            </p>
 
-        <section
-            id="accueil"
-            class="page active">
-
-            <div class="welcome">
-
-                <h2>
-                    Bienvenue sur K-Story 💕
-                </h2>
-
-                <p>
-
-                    Ton petit univers pour
-                    écrire, publier et découvrir
-                    des histoires.
-
-                </p>
-
-                <p>
-
-                    🌸 Écris ton histoire.
-                    <br>
-                    📖 Publie-la.
-                    <br>
-                    ✨ Fais découvrir ton imagination.
-
-                </p>
-
-
-                <div class="welcome-buttons">
-
-                    <button
-                        type="button"
-                        class="main-button"
-                        onclick="showPage('publier')">
-
-                        ✍️ Écrire une histoire
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="main-button"
-                        onclick="showPage('histoires')">
-
-                        📚 Découvrir les histoires
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             HISTOIRES
-        ================================================== -->
-
-        <section
-            id="histoires"
-            class="page">
-
-            <h2>
-                📚 Toutes les histoires
-            </h2>
-
-
-            <div class="search-box">
-
-                <label for="searchInput">
-
-                    🔎 Rechercher une histoire
-
-                </label>
-
-                <input
-                    type="search"
-                    id="searchInput"
-                    placeholder="Titre, auteur ou mot-clé..."
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <div id="storyList">
-
-                <div class="empty">
-
-                    <h3>
-                        📖 Chargement...
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             LECTURE
-        ================================================== -->
-
-        <section
-            id="lecture"
-            class="page">
-
-
-            <button
-                type="button"
-                class="back-button"
-                onclick="showPage('histoires')">
-
-                ← Retour aux histoires
-
+            <button class="main-button" onclick="newStory()">
+                ✍️ Écrire une histoire
             </button>
 
+        </div>
 
-            <article class="reading-page">
+    </section>
 
-                <h2 id="readingTitle">
-                </h2>
+    <!-- =========================
+         PAGE D'ÉCRITURE
+    ========================= -->
 
+    <section id="writePage" class="page">
 
-                <p
-                    id="readingAuthor"
-                    class="author">
-                </p>
+        <div class="editor-box">
 
+            <h2>✍️ Écrire mon histoire</h2>
 
-                <p
-                    id="readingDescription"
-                    class="description">
-                </p>
+            <!-- TITRE -->
 
+            <label class="input-label">
+                📖 Titre de l'histoire
+            </label>
 
-                <hr>
+            <input
+                type="text"
+                id="storyTitle"
+                placeholder="Exemple : Mon rêve en Corée 🌸"
+            >
 
+            <!-- IMAGE -->
 
-                <div
-                    id="readingContent"
-                    class="reading-content">
-                </div>
+            <label class="input-label">
+                🖼️ Image de l'histoire
+            </label>
 
-            </article>
+            <label for="imageInput" class="image-button">
+                🖼️ Choisir une image
+            </label>
 
-        </section>
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+            >
 
+            <div id="imagePreviewContainer">
 
-        <!-- ==================================================
-             ÉCRIRE / PUBLIER
-        ================================================== -->
+                <img
+                    id="imagePreview"
+                    alt="Image de l'histoire"
+                >
 
-        <section
-            id="publier"
-            class="page">
-
-
-            <div class="writing-page">
-
-                <h2>
-                    ✍️ Écrire une histoire
-                </h2>
-
-
-                <p>
-
-                    Donne un titre à ton histoire,
-                    choisis ton nom d'auteur,
-                    ajoute une description puis
-                    écris ton histoire.
-
-                </p>
-
-
-                <form id="storyForm">
-
-
-                    <!-- TITRE -->
-
-                    <label for="title">
-
-                        📖 Titre de ton histoire
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="title"
-                        placeholder="Ex : Mon rêve en Corée"
-                        required
-                    >
-
-
-                    <!-- AUTEUR -->
-
-                    <label for="author">
-
-                        👤 Nom d'auteur
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="author"
-                        placeholder="Ton pseudo"
-                        required
-                    >
-
-
-                    <!-- DESCRIPTION -->
-
-                    <label for="description">
-
-                        📝 Description
-
-                    </label>
-
-                    <textarea
-                        id="description"
-                        class="description-box"
-                        placeholder="Présente ton histoire..."
-                        required
-                    ></textarea>
-
-
-                    <!-- HISTOIRE -->
-
-                    <label for="content">
-
-                        📚 Ton histoire
-
-                    </label>
-
-                    <textarea
-                        id="content"
-                        class="story-editor"
-                        placeholder="Commence à écrire ton histoire ici...
-
-Chapitre 1
-
-Il était une fois..."
-                        required
-                    ></textarea>
-
-
-                    <!-- PUBLICATION -->
-
-                    <button
-                        type="submit"
-                        class="publish-button">
-
-                        🚀 Publier mon histoire
-
-                    </button>
-
-                </form>
+                <button
+                    id="removeImageButton"
+                    onclick="removeStoryImage()"
+                >
+                    🗑️ Supprimer l'image
+                </button>
 
             </div>
 
-        </section>
+            <!-- TEXTE -->
 
+            <label class="input-label">
+                ✏️ Ton histoire
+            </label>
 
-    </main>
+            <textarea
+                id="storyText"
+                placeholder="Écris ton histoire ici..."
+            ></textarea>
 
+            <!-- BOUTONS -->
 
-    <!-- ==================================================
-         FOOTER
-    ================================================== -->
+            <div class="editor-buttons">
 
-    <footer>
+                <button
+                    class="save-button"
+                    onclick="saveStory(false)"
+                >
+                    💾 Enregistrer
+                </button>
 
-        <p>
-            🌸 K-Story — Écris ton histoire,
-            raconte ton rêve. ✨
-        </p>
+                <button
+                    class="publish-button"
+                    onclick="saveStory(true)"
+                >
+                    🌸 Publier
+                </button>
 
-    </footer>
+                <button
+                    class="new-button"
+                    onclick="newStory()"
+                >
+                    📝 Nouvelle histoire
+                </button>
 
+            </div>
 
-    <!-- ==================================================
+        </div>
+
+    </section>
+
+    <!-- =========================
+         PAGE LIRE
+    ========================= -->
+
+    <section id="readPage" class="page">
+
+        <h2>📚 Mes histoires</h2>
+
+        <div id="storiesList"></div>
+
+    </section>
+
+    <!-- =========================
+         PAGE LECTURE
+    ========================= -->
+
+    <section id="readerPage" class="page">
+
+        <div id="reader">
+
+            <h2 id="readerTitle"></h2>
+
+            <img
+                id="readerImage"
+                alt="Image de couverture"
+            >
+
+            <div id="readerText"></div>
+
+            <button
+                class="main-button"
+                onclick="showPage('readPage'); displayStories()"
+            >
+                ← Retour aux histoires
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
          JAVASCRIPT
-    ================================================== -->
+    ========================= -->
 
     <script src="script.js"></script>
 
-
 </body>
-
-  </html>
+    </html>
