@@ -1,13 +1,59 @@
 // ======================================================
-// K-STORY — script.js
-// Navigation + publication + lecture + recherche
+// K-STORY 🌸
+// SCRIPT COMPLET
 // ======================================================
 
 const STORAGE_KEY = "kstory_stories";
 const CURRENT_STORY_KEY = "kstory_current_story";
 
+// Image actuellement sélectionnée
+let currentImage = "";
+
 // ======================================================
-// NAVIGATION ENTRE LES PAGES
+// RÉCUPÉRER LES HISTOIRES
+// ======================================================
+
+function getStories() {
+    try {
+        const stories = localStorage.getItem(STORAGE_KEY);
+
+        if (!stories) {
+            return [];
+        }
+
+        return JSON.parse(stories);
+
+    } catch (error) {
+        console.error("Erreur de lecture :", error);
+        return [];
+    }
+}
+
+// ======================================================
+// SAUVEGARDER LES HISTOIRES
+// ======================================================
+
+function saveStories(stories) {
+
+    try {
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(stories)
+        );
+
+    } catch (error) {
+
+        alert(
+            "Impossible de sauvegarder l'histoire. " +
+            "L'image est peut-être trop grande."
+        );
+
+        console.error(error);
+    }
+}
+
+// ======================================================
+// CHANGER DE PAGE
 // ======================================================
 
 function showPage(pageId) {
@@ -18,128 +64,280 @@ function showPage(pageId) {
         page.classList.remove("active");
     });
 
-    const selectedPage = document.getElementById(pageId);
+    const page = document.getElementById(pageId);
 
-    if (!selectedPage) {
-        console.error("Page introuvable :", pageId);
-        return;
+    if (page) {
+        page.classList.add("active");
     }
-
-    selectedPage.classList.add("active");
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
-    if (pageId === "histoires") {
-        displayStories();
-    }
 }
 
 // ======================================================
-// RÉCUPÉRER LES HISTOIRES
+// NOUVELLE HISTOIRE
 // ======================================================
 
-function getStories() {
+function newStory() {
 
-    try {
+    document.getElementById("storyTitle").value = "";
+    document.getElementById("storyText").value = "";
 
-        const savedStories =
-            localStorage.getItem(STORAGE_KEY);
+    currentImage = "";
 
-        if (!savedStories) {
-            return [];
-        }
+    document.getElementById("imageInput").value = "";
 
-        const stories = JSON.parse(savedStories);
+    document.getElementById(
+        "imagePreviewContainer"
+    ).style.display = "none";
 
-        return Array.isArray(stories)
-            ? stories
-            : [];
+    document.getElementById("imagePreview").src = "";
 
-    } catch (error) {
+    localStorage.removeItem(CURRENT_STORY_KEY);
 
-        console.error(
-            "Impossible de récupérer les histoires :",
-            error
+    showPage("writePage");
+}
+
+// ======================================================
+// CHOISIR UNE IMAGE
+// ======================================================
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const imageInput =
+        document.getElementById("imageInput");
+
+    if (imageInput) {
+
+        imageInput.addEventListener(
+            "change",
+            function(event) {
+
+                const file = event.target.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                // Vérifier que c'est bien une image
+                if (!file.type.startsWith("image/")) {
+
+                    alert("Choisis une image.");
+
+                    imageInput.value = "";
+
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    currentImage = e.target.result;
+
+                    document.getElementById(
+                        "imagePreview"
+                    ).src = currentImage;
+
+                    document.getElementById(
+                        "imagePreviewContainer"
+                    ).style.display = "block";
+
+                };
+
+                reader.readAsDataURL(file);
+            }
         );
-
-        return [];
     }
+
+    // Charger une éventuelle histoire en cours
+    loadCurrentStory();
+
+    // Afficher les histoires
+    displayStories();
+
+});
+
+// ======================================================
+// SUPPRIMER L'IMAGE
+// ======================================================
+
+function removeStoryImage() {
+
+    currentImage = "";
+
+    document.getElementById(
+        "imageInput"
+    ).value = "";
+
+    document.getElementById(
+        "imagePreview"
+    ).src = "";
+
+    document.getElementById(
+        "imagePreviewContainer"
+    ).style.display = "none";
 }
 
 // ======================================================
-// SAUVEGARDER LES HISTOIRES
+// ENREGISTRER / PUBLIER
 // ======================================================
 
-function saveStories(stories) {function saveStory() {
-    const title = document.getElementById("storyTitle").value.trim();
-    const content = document.getElementById("storyContent").value;
+function saveStory(published) {
 
-    const imageElement = document.querySelector("#imagePreview img");
-    const image = imageElement ? imageElement.src : "";
+    const title =
+        document.getElementById("storyTitle")
+        .value
+        .trim();
 
-    if (!title || !content) {
-        alert("Écris un titre et ton histoire avant de publier.");
+    const text =
+        document.getElementById("storyText")
+        .value
+        .trim();
+
+    // Vérification du titre
+    if (!title) {
+
+        alert("Écris d'abord le titre de ton histoire. 📖");
+
+        document.getElementById("storyTitle").focus();
+
         return;
     }
 
-    const stories = JSON.parse(
-        localStorage.getItem("kstory_stories") || "[]"
-    );
+    // Vérification du texte
+    if (!text) {
 
-    const story = {
-        id: Date.now(),
-        title: title,
-        content: content,
-        image: image,
-        date: new Date().toLocaleDateString("fr-FR")
-    };
+        alert("Écris quelque chose dans ton histoire. ✍️");
 
-    stories.push(story);
+        document.getElementById("storyText").focus();
 
-    localStorage.setItem(
-        "kstory_stories",
-        JSON.stringify(stories)
-    );
+        return;
+    }
 
-    alert("✨ Ton histoire a été enregistrée !");
+    let stories = getStories();
 
-    showPage("stories");
-}
+    const currentStoryId =
+        localStorage.getItem(CURRENT_STORY_KEY);
 
-    try {
+    let story;
+
+    // ==================================================
+    // MODIFIER UNE HISTOIRE EXISTANTE
+    // ==================================================
+
+    if (currentStoryId) {
+
+        const index = stories.findIndex(
+            function(item) {
+                return item.id === currentStoryId;
+            }
+        );
+
+        if (index !== -1) {
+
+            story = stories[index];
+
+            story.title = title;
+            story.text = text;
+            story.image = currentImage;
+            story.published = published;
+            story.updatedAt = new Date().toISOString();
+
+            stories[index] = story;
+
+        } else {
+
+            story = createStory(
+                title,
+                text,
+                currentImage,
+                published
+            );
+
+            stories.push(story);
+        }
+
+    }
+
+    // ==================================================
+    // CRÉER UNE NOUVELLE HISTOIRE
+    // ==================================================
+
+    else {
+
+        story = createStory(
+            title,
+            text,
+            currentImage,
+            published
+        );
+
+        stories.push(story);
 
         localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(stories)
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Impossible de sauvegarder les histoires :",
-            error
-        );
-
-        alert(
-            "⚠️ Impossible de sauvegarder cette histoire sur cet appareil."
+            CURRENT_STORY_KEY,
+            story.id
         );
     }
+
+    // Sauvegarder
+    saveStories(stories);
+
+    // Garder l'histoire actuelle
+    localStorage.setItem(
+        CURRENT_STORY_KEY,
+        story.id
+    );
+
+    if (published) {
+
+        alert(
+            "🌸 Ton histoire a été publiée dans K-Story !"
+        );
+
+    } else {
+
+        alert(
+            "💾 Ton histoire a été enregistrée !"
+        );
+    }
+
+    // Mettre à jour la liste
+    displayStories();
 }
 
 // ======================================================
-// PROTECTION DU TEXTE
+// CRÉER UNE HISTOIRE
 // ======================================================
 
-function escapeHTML(text) {
+function createStory(
+    title,
+    text,
+    image,
+    published
+) {
 
-    const div = document.createElement("div");
+    return {
 
-    div.textContent = text || "";
+        id:
+            Date.now().toString() +
+            Math.random().toString(36).substring(2),
 
-    return div.innerHTML;
+        title: title,
+
+        text: text,
+
+        image: image || "",
+
+        published: published,
+
+        createdAt: new Date().toISOString(),
+
+        updatedAt: new Date().toISOString()
+    };
 }
 
 // ======================================================
@@ -149,7 +347,7 @@ function escapeHTML(text) {
 function displayStories() {
 
     const container =
-        document.getElementById("storyList");
+        document.getElementById("storiesList");
 
     if (!container) {
         return;
@@ -157,20 +355,22 @@ function displayStories() {
 
     const stories = getStories();
 
+    container.innerHTML = "";
+
     if (stories.length === 0) {
 
         container.innerHTML = `
             <div class="empty">
-                <h3>📖 Aucune histoire publiée</h3>
-
+                <h3>📚 Aucune histoire pour le moment</h3>
                 <p>
-                    Sois la première à publier
-                    une histoire sur K-Story !
+                    Écris ta première histoire et
+                    elle apparaîtra ici. 🌸
                 </p>
 
                 <button
                     class="main-button"
-                    onclick="showPage('publier')">
+                    onclick="newStory()"
+                >
                     ✍️ Écrire une histoire
                 </button>
             </div>
@@ -179,489 +379,305 @@ function displayStories() {
         return;
     }
 
-    container.innerHTML = "";
+    // Afficher les histoires de la plus récente à la plus ancienne
+    const reversedStories = [...stories].reverse();
 
-    stories.forEach(function(story, index) {
+    reversedStories.forEach(function(story) {
 
         const card =
-            document.createElement("article");
+            document.createElement("div");
 
         card.className = "story-card";
 
-        card.innerHTML = `
-            <h3>
-                📖 ${escapeHTML(story.title)}
-            </h3>
+        // Image
+        if (story.image) {
 
-            <p class="author">
-                ✍️ Par ${escapeHTML(
-                    story.author || "Auteur"
-                )}
-            </p>
+            const image =
+                document.createElement("img");
 
-            <p class="description">
-                ${escapeHTML(
-                    story.description ||
-                    "Une nouvelle histoire à découvrir..."
-                )}
-            </p>
+            image.src = story.image;
 
-            <p>
-                📅 ${escapeHTML(story.date || "")}
-            </p>
+            image.alt = story.title;
 
-            <button
-                type="button"
-                class="read-button"
-                onclick="readStory(${index})">
-                📖 Lire l'histoire
-            </button>
-        `;
+            card.appendChild(image);
+        }
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "story-card-content";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            story.title;
+
+        const preview =
+            document.createElement("p");
+
+        let shortText = story.text;
+
+        if (shortText.length > 180) {
+
+            shortText =
+                shortText.substring(0, 180) +
+                "...";
+        }
+
+        preview.textContent =
+            shortText;
+
+        const readButton =
+            document.createElement("button");
+
+        readButton.className =
+            "read-button";
+
+        readButton.textContent =
+            "📖 Lire";
+
+        readButton.onclick = function() {
+
+            openStory(story.id);
+
+        };
+
+        const editButton =
+            document.createElement("button");
+
+        editButton.className =
+            "save-button";
+
+        editButton.textContent =
+            "✏️ Modifier";
+
+        editButton.onclick = function() {
+
+            editStory(story.id);
+
+        };
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "delete-button";
+
+        deleteButton.textContent =
+            "🗑️ Supprimer";
+
+        deleteButton.onclick = function() {
+
+            deleteStory(story.id);
+
+        };
+
+        content.appendChild(title);
+        content.appendChild(preview);
+        content.appendChild(readButton);
+        content.appendChild(editButton);
+        content.appendChild(deleteButton);
+
+        card.appendChild(content);
 
         container.appendChild(card);
     });
 }
 
 // ======================================================
-// PUBLIER UNE HISTOIRE
+// OUVRIR UNE HISTOIRE EN LECTURE
 // ======================================================
 
-function publishStory() {
-
-    const titleInput =
-        document.getElementById("title");
-
-    const authorInput =
-        document.getElementById("author");
-
-    const descriptionInput =
-        document.getElementById("description");
-
-    const contentInput =
-        document.getElementById("content");
-
-    if (
-        !titleInput ||
-        !authorInput ||
-        !descriptionInput ||
-        !contentInput
-    ) {
-
-        alert(
-            "⚠️ Le formulaire d'histoire est introuvable."
-        );
-
-        return;
-    }
-
-    const title =
-        titleInput.value.trim();
-
-    const author =
-        authorInput.value.trim();
-
-    const description =
-        descriptionInput.value.trim();
-
-    const content =
-        contentInput.value.trim();
-
-    if (!title) {
-
-        alert(
-            "⚠️ Écris le titre de ton histoire."
-        );
-
-        titleInput.focus();
-
-        return;
-    }
-
-    if (!author) {
-
-        alert(
-            "⚠️ Écris ton nom d'auteur."
-        );
-
-        authorInput.focus();
-
-        return;
-    }
-
-    if (!description) {
-
-        alert(
-            "⚠️ Ajoute une description."
-        );
-
-        descriptionInput.focus();
-
-        return;
-    }
-
-    if (!content) {
-
-        alert(
-            "⚠️ Écris ton histoire."
-        );
-
-        contentInput.focus();
-
-        return;
-    }
-
-    const newStory = {
-
-        id: Date.now(),
-
-        title: title,
-
-        author: author,
-
-        description: description,
-
-        content: content,
-
-        date: new Date()
-            .toLocaleDateString("fr-FR")
-    };
+function openStory(id) {
 
     const stories = getStories();
 
-    stories.unshift(newStory);
+    const story =
+        stories.find(function(item) {
+            return item.id === id;
+        });
+
+    if (!story) {
+
+        alert("Histoire introuvable.");
+
+        return;
+    }
+
+    document.getElementById(
+        "readerTitle"
+    ).textContent = story.title;
+
+    document.getElementById(
+        "readerText"
+    ).textContent = story.text;
+
+    const readerImage =
+        document.getElementById("readerImage");
+
+    if (story.image) {
+
+        readerImage.src =
+            story.image;
+
+        readerImage.style.display =
+            "block";
+
+    } else {
+
+        readerImage.src = "";
+
+        readerImage.style.display =
+            "none";
+    }
+
+    showPage("readerPage");
+}
+
+// ======================================================
+// MODIFIER UNE HISTOIRE
+// ======================================================
+
+function editStory(id) {
+
+    const stories = getStories();
+
+    const story =
+        stories.find(function(item) {
+            return item.id === id;
+        });
+
+    if (!story) {
+
+        alert("Histoire introuvable.");
+
+        return;
+    }
+
+    document.getElementById(
+        "storyTitle"
+    ).value = story.title;
+
+    document.getElementById(
+        "storyText"
+    ).value = story.text;
+
+    currentImage =
+        story.image || "";
+
+    if (currentImage) {
+
+        document.getElementById(
+            "imagePreview"
+        ).src = currentImage;
+
+        document.getElementById(
+            "imagePreviewContainer"
+        ).style.display = "block";
+
+    } else {
+
+        document.getElementById(
+            "imagePreviewContainer"
+        ).style.display = "none";
+    }
+
+    localStorage.setItem(
+        CURRENT_STORY_KEY,
+        story.id
+    );
+
+    showPage("writePage");
+}
+
+// ======================================================
+// CHARGER L'HISTOIRE EN COURS
+// ======================================================
+
+function loadCurrentStory() {
+
+    const currentId =
+        localStorage.getItem(
+            CURRENT_STORY_KEY
+        );
+
+    if (!currentId) {
+        return;
+    }
+
+    const stories = getStories();
+
+    const story =
+        stories.find(function(item) {
+            return item.id === currentId;
+        });
+
+    if (!story) {
+        return;
+    }
+
+    document.getElementById(
+        "storyTitle"
+    ).value = story.title;
+
+    document.getElementById(
+        "storyText"
+    ).value = story.text;
+
+    currentImage =
+        story.image || "";
+
+    if (currentImage) {
+
+        document.getElementById(
+            "imagePreview"
+        ).src = currentImage;
+
+        document.getElementById(
+            "imagePreviewContainer"
+        ).style.display = "block";
+    }
+}
+
+// ======================================================
+// SUPPRIMER UNE HISTOIRE
+// ======================================================
+
+function deleteStory(id) {
+
+    const confirmation =
+        confirm(
+            "Voulez-vous vraiment supprimer cette histoire ?"
+        );
+
+    if (!confirmation) {
+        return;
+    }
+
+    let stories = getStories();
+
+    stories =
+        stories.filter(function(story) {
+            return story.id !== id;
+        });
 
     saveStories(stories);
 
-    const form =
-        document.getElementById("storyForm");
-
-    if (form) {
-        form.reset();
-    }
-
-    alert(
-        "🎉 Ton histoire a été publiée !"
-    );
-
-    showPage("histoires");
-}
-
-// ======================================================
-// LIRE UNE HISTOIRE
-// ======================================================
-
-function readStory(index) {function openStory(id) {
-    const stories = JSON.parse(
-        localStorage.getItem("kstory_stories") || "[]"
-    );
-
-    const story = stories.find(s => s.id == id);
-
-    if (!story) {
-        alert("Histoire introuvable.");
-        return;
-    }
-
-    document.getElementById("readTitle").textContent = story.title;
-
-    document.getElementById("readContent").innerHTML =
-        story.content.replace(/\n/g, "<br>");
-
-    const imageContainer =
-        document.getElementById("readImage");
-
-    if (story.image) {
-        imageContainer.innerHTML = `
-            <img
-                src="${story.image}"
-                alt="Illustration de l'histoire"
-                class="story-reading-image"
-            >
-        `;
-    } else {
-        imageContainer.innerHTML = "";
-    }
-
-    showPage("read");
-                          }
-
-    const stories = getStories();
-
-    const story = stories[index];
-
-    if (!story) {
-
-        alert(
-            "⚠️ Cette histoire n'existe pas."
+    const currentId =
+        localStorage.getItem(
+            CURRENT_STORY_KEY
         );
 
-        return;
-    }
+    if (currentId === id) {
 
-    try {
-
-        localStorage.setItem(
-            CURRENT_STORY_KEY,
-            JSON.stringify(story)
+        localStorage.removeItem(
+            CURRENT_STORY_KEY
         );
-
-    } catch (error) {
-
-        console.error(error);
     }
 
-    const title =
-        document.getElementById("readingTitle");
+    displayStories();
 
-    const author =
-        document.getElementById("readingAuthor");
-
-    const description =
-        document.getElementById("readingDescription");
-
-    const content =
-        document.getElementById("readingContent");
-
-    if (
-        !title ||
-        !author ||
-        !description ||
-        !content
-    ) {
-
-        alert(
-            "⚠️ La page de lecture est introuvable."
-        );
-
-        return;
-    }
-
-    title.textContent =
-        story.title || "Sans titre";
-
-    author.textContent =
-        "✍️ Par " +
-        (story.author || "Auteur");
-
-    description.textContent =
-        story.description || "";
-
-    content.innerHTML =
-        escapeHTML(
-            story.content || ""
-        ).replace(/\n/g, "<br>");
-
-    showPage("lecture");
-}
-
-// ======================================================
-// RECHERCHE DES HISTOIRES
-// ======================================================
-
-function searchStories() {
-
-    const searchInput =
-        document.getElementById("searchInput");
-
-    const container =
-        document.getElementById("storyList");
-
-    if (!searchInput || !container) {
-        return;
-    }
-
-    const search =
-        searchInput.value
-            .toLowerCase()
-            .trim();
-
-    const stories = getStories();
-
-    if (!search) {
-
-        displayStories();
-
-        return;
-    }
-
-    const results =
-        stories.filter(function(story) {
-
-            return (
-
-                (story.title || "")
-                    .toLowerCase()
-                    .includes(search)
-
-                ||
-
-                (story.author || "")
-                    .toLowerCase()
-                    .includes(search)
-
-                ||
-
-                (story.description || "")
-                    .toLowerCase()
-                    .includes(search)
-            );
-        });
-
-    container.innerHTML = "";
-
-    if (results.length === 0) {
-
-        container.innerHTML = `
-            <div class="empty">
-
-                <h3>
-                    🔎 Aucune histoire trouvée
-                </h3>
-
-                <p>
-                    Essaie avec un autre mot.
-                </p>
-
-            </div>
-        `;
-
-        return;
-    }
-
-    results.forEach(function(story) {
-
-        const originalIndex =
-            stories.indexOf(story);
-
-        const card =
-            document.createElement("article");
-
-        card.className =
-            "story-card";
-
-        card.innerHTML = `
-            <h3>
-                📖 ${escapeHTML(story.title)}
-            </h3>
-
-            <p class="author">
-                ✍️ Par ${escapeHTML(
-                    story.author || "Auteur"
-                )}
-            </p>
-
-            <p class="description">
-                ${escapeHTML(
-                    story.description || ""
-                )}
-            </p>
-
-            <button
-                type="button"
-                class="read-button"
-                onclick="readStory(${originalIndex})">
-                📖 Lire l'histoire
-            </button>
-        `;
-
-        container.appendChild(card);
-    });
-}
-
-// ======================================================
-// INITIALISATION
-// ======================================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        // Afficher les histoires
-        displayStories();
-
-        // Recherche
-        const searchInput =
-            document.getElementById("searchInput");
-
-        if (searchInput) {
-
-            searchInput.addEventListener(
-                "input",
-                searchStories
-            );
-        }
-
-        // Formulaire
-        const storyForm =
-            document.getElementById("storyForm");
-
-        if (storyForm) {
-
-            storyForm.addEventListener(
-                "submit",
-                function(event) {
-
-                    event.preventDefault();
-
-                    publishStory();
-                }
-            );
-        }
-
-    }
-);
-
-// ======================================================
-// RENDRE LES FONCTIONS ACCESSIBLES AUX BOUTONS HTML
-// ======================================================
-
-window.showPage = showPage;
-window.publishStory = publishStory;
-window.readStory = readStory;
-window.searchStories = searchStories;// ======================================================
-// AJOUTER UNE IMAGE DANS L'HISTOIRE
-// ======================================================
-
-const imageButton = document.getElementById("imageButton");
-const storyImageInput = document.getElementById("storyImageInput");
-const imagePreview = document.getElementById("imagePreview");
-
-if (imageButton && storyImageInput) {
-
-    imageButton.addEventListener("click", function () {
-        storyImageInput.click();
-    });
-
-    storyImageInput.addEventListener("change", function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-            return;
-        }
-
-        if (!file.type.startsWith("image/")) {
-            alert("Veuillez choisir une image.");
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-
-            imagePreview.innerHTML = `
-                <div class="story-image">
-                    <img src="${event.target.result}"
-                         alt="Illustration de l'histoire">
-                </div>
-            `;
-
-            imagePreview.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-        };
-
-        reader.readAsDataURL(file);
-    });
-}
+    alert("🗑️ Histoire supprimée.");
+                           }
