@@ -73,7 +73,41 @@ function getStories() {
 // SAUVEGARDER LES HISTOIRES
 // ======================================================
 
-function saveStories(stories) {
+function saveStories(stories) {function saveStory() {
+    const title = document.getElementById("storyTitle").value.trim();
+    const content = document.getElementById("storyContent").value;
+
+    const imageElement = document.querySelector("#imagePreview img");
+    const image = imageElement ? imageElement.src : "";
+
+    if (!title || !content) {
+        alert("Écris un titre et ton histoire avant de publier.");
+        return;
+    }
+
+    const stories = JSON.parse(
+        localStorage.getItem("kstory_stories") || "[]"
+    );
+
+    const story = {
+        id: Date.now(),
+        title: title,
+        content: content,
+        image: image,
+        date: new Date().toLocaleDateString("fr-FR")
+    };
+
+    stories.push(story);
+
+    localStorage.setItem(
+        "kstory_stories",
+        JSON.stringify(stories)
+    );
+
+    alert("✨ Ton histoire a été enregistrée !");
+
+    showPage("stories");
+}
 
     try {
 
@@ -316,7 +350,40 @@ function publishStory() {
 // LIRE UNE HISTOIRE
 // ======================================================
 
-function readStory(index) {
+function readStory(index) {function openStory(id) {
+    const stories = JSON.parse(
+        localStorage.getItem("kstory_stories") || "[]"
+    );
+
+    const story = stories.find(s => s.id == id);
+
+    if (!story) {
+        alert("Histoire introuvable.");
+        return;
+    }
+
+    document.getElementById("readTitle").textContent = story.title;
+
+    document.getElementById("readContent").innerHTML =
+        story.content.replace(/\n/g, "<br>");
+
+    const imageContainer =
+        document.getElementById("readImage");
+
+    if (story.image) {
+        imageContainer.innerHTML = `
+            <img
+                src="${story.image}"
+                alt="Illustration de l'histoire"
+                class="story-reading-image"
+            >
+        `;
+    } else {
+        imageContainer.innerHTML = "";
+    }
+
+    showPage("read");
+                          }
 
     const stories = getStories();
 
